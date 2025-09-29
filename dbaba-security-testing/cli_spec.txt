@@ -1,0 +1,859 @@
+Address Book Appliance (ABA)
+Command Line Interface Specification
+Mark R. Heckman
+
+CHANGE LOG
+Date
+
+Vers
+1.0
+1.1
+
+4/26/20 1.2
+
+4/29/20 1.2.1
+
+5/29/20 1.2.2
+4/1/21
+
+1.2.3
+
+10/4/21 1.2.4
+
+7/20/22 1.3
+8/10/22 1.3.1
+7/28/22 1.3.2
+
+Version 1.3
+
+Change
+• First version posted to Bb
+• Added HLP (help) command and fixed typos
+• Changed completion code in ADR “RecordID already exists” to
+“Duplicate recordID”, and added that completion code to IMD
+command
+• Added EXT (exit) command
+• Added completion code for unrecognized commands
+• Clarified handling of duplicate recordIDs in the input file for IMD
+• Added “Number of records exceeds maximum” completion code to
+ADR
+• Modified LIN to prompt for the password separately
+• Added command prompt
+• Added LSU (list users) admin command
+• Improved explanation for various completion codes.
+• Changed DAL (display audit log) command to RAL (read audit log)
+• Added DAL (delete audit log) command
+• Changed format of database records in input and output files
+• Added WAI and REA commands
+• Changed format of Input and Output data files
+• Removed most storage constraints, including maximum number of recs
+• Updated ToC
+• Fixed minor typos in text.
+
+By
+mrh
+mrh
+
+mrh
+
+mrh
+
+mrh
+mrh
+mrh
+
+mrh
+mrh
+mrh
+
+P a g e 1 | 30
+
+Contents
+Introduction .................................................................................................................................................. 4
+Syntax Key ..................................................................................................................................................... 4
+Command Prompt ......................................................................................................................................... 4
+Startup .......................................................................................................................................................... 4
+Initial System State ....................................................................................................................................... 4
+Admin User vs. Normal Users ....................................................................................................................... 4
+ABA Storage Constants ................................................................................................................................. 5
+Account Identification and Authentication................................................................................................... 5
+Data Records ................................................................................................................................................. 5
+Database Files for Importing and Exporting Address Records.................................................................. 5
+Audit Records ................................................................................................................................................ 6
+Authentication Commands ........................................................................................................................... 7
+Login (LIN) ................................................................................................................................................. 7
+Logout (LOU) ........................................................................................................................................... 10
+Change Password (CHP) .......................................................................................................................... 11
+Admin-only Commands – Add/Delete User and Audit Logs ....................................................................... 13
+Add User (ADU) ....................................................................................................................................... 13
+Delete User (DEU) ................................................................................................................................... 14
+List Users (LSU)........................................................................................................................................ 15
+Read Audit Log (RAL)............................................................................................................................... 16
+Delete Audit Log (DAL) ............................................................................................................................ 17
+Database Commands (Non-Admin) ............................................................................................................ 18
+Add Record (ADR) ................................................................................................................................... 18
+Delete Record (DER)................................................................................................................................ 20
+Edit Record (EDR) .................................................................................................................................... 21
+Read Record (RER) .................................................................................................................................. 22
+Read All Records (RAR) ........................................................................................................................... 24
+Import Database (IMD) ........................................................................................................................... 25
+Export Database (EXD) ............................................................................................................................ 26
+Miscellaneous Commands .......................................................................................................................... 27
+Help (HLP) ............................................................................................................................................... 27
+Who Am I (WAI) ...................................................................................................................................... 28
+
+Version 1.3
+
+P a g e 2 | 30
+
+Exit (EXT) ................................................................................................................................................. 29
+Unrecognized Commands ....................................................................................................................... 30
+
+Version 1.3
+
+P a g e 3 | 30
+
+Introduction
+This document constitutes the command line user interface specification of the Address Book Appliance
+(henceforth, ABA). The ABA is an application for managing the storage and retrieval of physical address,
+phone number, and email address information of individuals and organizations.
+The ABA application runs on a Linux operating system base and is entirely command-line driven. All user
+inputs and outputs are in the form of text entered or displayed in a Linux terminal. All accounts on an
+ABA are password-protected.
+
+Syntax Key
+Syntax for each command described in this document is represented by the name of the command,
+followed by input parameters. Parameters are indicated by angle brackets, “<” and “>”. Optional
+parameters are indicated by square brackets, “[“ and “]”. An unspecified number of parameters (zero or
+more) is indicated by an ellipsis, “...”.
+Some parameters, such as record fields, are named. These parameters are entered by using the name of
+the parameter, followed by an equals sign (“=”) and the parameter value, as in “name=value”. For
+example, “SA=’100 Main St.’”.
+For example, the following command “EDR”, has two required parameters, one of which is a named
+parameter, and may accept one or more optional named parameters:
+EDR <recordID> <field1=value1> [<field2=value2> ...]
+
+Command Prompt
+When the program first starts, and after each command, the system will present a command prompt:
+“ABA>”. This will indicate to the user that the system is running and ready to accept a command.
+
+Startup
+When the program first starts, it will present the following text to the user:
+Address Book Application, version <version number>. Type “HLP” for a list of commands.
+
+Initial System State
+When first installed, the ABA has only one, default user, named “admin”. On first run, upon attempting
+to login, the admin user will be prompted to create a password (see the specification for the “LIN”
+command, below).
+
+Admin User vs. Normal Users
+After logging in, the admin user is permitted to add and delete normal user accounts (admin accounts
+cannot be added or deleted) and manage audit log data. Admin users may not save address book
+records.
+A normal user, as with the admin user, must create a password on first login. Thereafter, normal users
+may add, edit, or delete address book records, or import or export collections of database records.
+
+Version 1.3
+
+P a g e 4 | 30
+
+ABA Storage Constants
+The ABA has the following configuration constants:
+•
+•
+
+Maximum size of a password = 24 characters
+Maximum size of a userID = 16 characters
+
+Account Identification and Authentication
+Each account must be associated with a unique userID. UserIDs must consist of between 1 and 16 ASCII
+letters (upper and lower case) and numbers, in any combination.
+Users authenticate themselves to the ABA by providing an account userID and the password associated
+with that account. Passwords may be from 8 to 24 upper-or lower-case letters or numbers in length.
+Only a user authenticated to an account can add, modify, or delete records in that account.
+
+Data Records
+Address data records consist of the following named fields. For each field shown, the corresponding
+field name is enclosed in parentheses (except for the recordID, which does not require a field name):
+1. recordID – A unique record identifier. This may be, for example, a nickname of the person
+identified in the record, or some other distinguishing string.
+2. Surname (SN)
+3. Given name (GN)
+4. Personal email address (PEM)
+5. Work email address (WEM)
+6. Personal phone number (PPH)
+7. Work phone number (WPH)
+8. Street address (SA)
+9. City (CITY)
+10. State or Province (STP)
+11. Country (CTY)
+12. Postal code (PC)
+Field names are used in input parameters to identify field values when records are added or edited.
+They are also displayed in outputs when records are read.
+Data field values may be no more than 64 printable ASCII characters in length. The ABA shall carry out
+nominal validity checks on parameters to ensure that, for example, no non-printing characters are
+entered into a database field, but otherwise does not validate data fields.
+
+Database Files for Importing and Exporting Address Records
+Records in database files used for importing and exporting shall be in comma-separated value (CSV)
+format, with one record per line and all fields in a record separated by commas. All fields must be
+present, although empty fields are allowed.
+The recordID for each record in a database file must be unique (i.e., no duplicate recordIDs are allowed
+in a database file).
+
+Version 1.3
+
+P a g e 5 | 30
+
+For example, here is a record with the recordID “HM”, surname “Mudd”, given name “Harvey”, and a
+work phone number:
+HM,Mudd,Harvey,,,,18805551212,,,,,
+The order of fields in input or output database files does not matter.
+
+Audit Records
+The system generates audit records for the following security-relevant operations, where the audit
+record type identifier is shown in parentheses:
+•
+•
+•
+•
+•
+•
+•
+•
+
+Failed logins (LF)
+Successful logins (LS)
+First logins (L1) - when passwords are first created; both L1 and LS records are generated
+Logouts (LO)
+Successful password changes (SPC)
+Failed password changes (FPC)
+Added users (AU)
+Deleted users (DU)
+
+Audit records shall have the following fields:
+Date, Time, Audit record type, UserID
+When Audit logs are listed by an Admin, the records shall be printed in CSV format, in the order above.
+When the system needs to store an audit record, but has reached the limit of the number of audit
+records it can store, it deletes the oldest record and adds the new one (i.e., a circular queue using the
+“first in first out” FIFO principle).
+
+Version 1.3
+
+P a g e 6 | 30
+
+Authentication Commands
+Login (LIN)
+Name
+LIN
+Syntax
+LIN <userID>
+Input
+userID
+The identifier for an account
+Output
+There are four cases that determine the output: 1) there is a currently active login; 2)
+there is no currently active login but the account does not exist; 3) there is no currently
+active login, the account exists, and this is NOT the first time the account has been used;
+and 4) there is no currently active login, the account exists, and this is the first time that
+the account has been used.
+Case 1 – There is a currently active login:
+The following completion code is returned:
+An account is currently active; logout before
+proceeding
+Case 2 - There is no currently active login but the account does not exist:
+The following completion code is returned:
+Invalid credentials
+Case 3 - There is no currently active login, the account exists, and this is NOT the first
+time the account has been used.
+The program prompts the user for their password:
+Enter your password: <password>
+The user then enters their password. If the user enters an incorrect password for
+that account, the following completion code is returned:
+Invalid credentials
+If the password is valid, the system returns the following completion code:
+OK
+
+Version 1.3
+
+P a g e 7 | 30
+
+Case 4 - there is no currently active login, the account exists, and this is the first time
+that the account has been used:
+This is the first time the account is being used. You
+must create a new password. Passwords may contain 1-24
+upper- or lower-case letters or numbers. Choose an
+uncommon password that would be difficult to guess.
+After the user enters a password, they are prompted to enter the same password
+again:
+Reenter the same password:
+Completion status codes are returned in the following order:
+Passwords do not match
+Password contains illegal characters
+Password is too easy to guess
+OK
+Description
+This operation is used to authenticate to an account. There are several possible cases:
+1. There is a currently active login. The user must logout of the previous session to
+proceed. No change to the system.
+2. There is no currently active login but the userID is invalid (meaning the account does
+not exist). The operation cannot proceed. No change to the system.
+3. There is no currently active login, the account is valid, this is not the first time the
+account has been used so there is an associated password for the account, but the
+login credential (password) is invalid. The operation cannot proceed. No change to
+the system.
+4. There is no currently active login, the account is valid, this is not the first time the
+account has been used so there is an associated password for the account, and the
+input password is correct. The operation succeeds. The system enters a new login
+session using the specified account.
+5. There is no currently active login, the account is valid, and this is the first time that
+the account has been used. In this case, the user is prompted to create a new
+password, consisting of up to 24 upper- or lower-case letters and numbers. The user
+is then prompted a second time to reenter the same password. The following
+conditions must be satisfied for the operation to succeed:
+• The two passwords exactly match
+• The password consists of only upper- or lower-case letters or numbers
+• The password must not be too easy to guess
+If the password is accepted, the operation succeeds. The password is now
+associated with that user account and the systems enters a new login session using
+that account.
+
+Version 1.3
+
+P a g e 8 | 30
+
+Version 1.3
+
+P a g e 9 | 30
+
+Logout (LOU)
+Name
+LOU
+Syntax
+LOU
+Input
+none
+Output
+Completion status codes are returned in the following order:
+No active login session
+OK
+Description
+This operation is used to end an active login session. If there is an active login session,
+the session is terminated. Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 10 | 30
+
+Change Password (CHP)
+Name
+CHP
+Syntax
+CHP <old password>
+Input
+Old password
+The current password for the account
+Output
+If the authentication credentials (viz., old password) is correct, the system prompts the
+user as follows:
+Create a new password. Passwords may contain up to 24
+upper- or lower-case letters or numbers. Choose an
+uncommon password that would be difficult to guess.
+After the user enters a password, they are prompted to enter the same password
+again:
+Reenter the same password:
+Completion status codes are returned in the following order:
+No active login session
+Invalid credentials
+Passwords do not match
+Password contains illegal characters
+Password is too easy to guess
+OK
+Description
+This operation is used to change the authentication credential (password) associated
+with the active account. There must be an active account session. The following
+conditions must be satisfied for the operation to succeed:
+•
+•
+•
+
+Version 1.3
+
+There must be an active login session.
+The user must supply the correct authentication credential for the active
+account.
+The new password must meet the requirements for a password (contain no
+more than 24 upper- or lower-case letters or numbers and not be easy to
+guess).
+
+P a g e 11 | 30
+
+If the conditions are met, the authentication credential associated with the account is
+changed. Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 12 | 30
+
+Admin-only Commands – Add/Delete User and Audit Logs
+Add User (ADU)
+Name
+ADU
+Syntax
+ADU <userID>
+Input
+userID
+An identifier for a user account
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not active
+Invalid userID
+Account already exists
+OK
+Description
+This operation is used to add a new user account. Several conditions must be met for
+the operation to succeed:
+1. The admin account must be active.
+2. The userID must have the correct form (from 1 to 16 lower- or upper-case
+letters, or numbers) and not already identify an existing account
+If these conditions are satisfied, a new account is created with the userID. Otherwise,
+there is no change to the system.
+
+Version 1.3
+
+P a g e 13 | 30
+
+Delete User (DEU)
+Name
+DEU
+Syntax
+DEU <userID>
+Input
+userID
+An identifier for a user account
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not active
+Invalid userID
+Account does not exist
+OK
+Description
+This operation is used to delete an existing user account. Several conditions must be
+met for the operation to succeed:
+1. The admin account must be active.
+2. The userID must have the correct form (from 1 to 16 lower- or upper-case
+letters, or numbers) and identify an existing account
+If these conditions are satisfied, the account and all associated records are deleted.
+Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 14 | 30
+
+List Users (LSU)
+Name
+LSU
+Syntax
+LSU
+Input
+None.
+Output
+List of all user account names, each on a separate line.
+Completion status codes are returned in the following order:
+No active login session
+Admin not active
+OK
+Description
+This operation permits the admin user to list all of the user accounts. The admin account
+must currently be active for the operation to succeed. There is no change to the system.
+
+Version 1.3
+
+P a g e 15 | 30
+
+Read Audit Log (RAL)
+Name
+RAL
+Syntax
+RAL [<userID>]
+Input
+userID
+An identifier for a user account. This input is optional.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not active
+Invalid userID
+Account does not exist
+OK
+Audit records
+Description
+This operation is used to display the contents of the audit log. Several conditions must
+be met for the operation to succeed:
+1. The admin account must be active.
+2. The userID, if supplied, must have the correct form (from 1 to 16 lower- or
+upper-case letters, or numbers) and identify an existing account
+If these conditions are satisfied, the operation succeeds, and all of the audit records for
+the specified account are printed to standard out (i.e., the console), one audit record
+per line. If no userID is specified then all of the audit records for all users are printed to
+standard out. Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 16 | 30
+
+Delete Audit Log (DAL)
+Name
+DAL
+Syntax
+DAL [<userID>]
+Input
+userID
+An identifier for a user account. This input is optional.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not active
+Invalid userID
+Account does not exist
+OK
+Description
+This operation is used to delete the contents of the audit log. Several conditions must be
+met for the operation to succeed:
+1. The admin account must be active.
+2. The userID, if supplied, must have the correct form (from 1 to 16 lower- or
+upper-case letters, or numbers) and identify an existing account
+If these conditions are satisfied, the operation succeeds, and all of the audit records for
+the specified account are deleted from the audit log. If no userID is specified then the
+entire audit log is deleted. Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 17 | 30
+
+Database Commands (Non-Admin)
+Add Record (ADR)
+Name
+ADR
+Syntax
+ADR <recordID> [<field1=value1> <field2=value2> ...]
+Input
+recordID
+The unique ID for the new record.
+field data
+One or more record field label=value pairs. These are optional.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+No recordID
+Invalid recordID
+One or more invalid record data fields
+Duplicate recordID
+OK
+Description
+This operation is used to add a new record to a database. Several conditions must be
+met for the operation to succeed:
+1.
+2.
+3.
+4.
+5.
+
+Version 1.3
+
+A non-admin user must be currently logged-in.
+The record data provided must include a recordID.
+All record field identifiers are valid.
+All record fields must satisfy formatting requirements.
+There must not already be a record in the database with that recordID.
+
+P a g e 18 | 30
+
+If these conditions are satisfied, the operation succeeds and a record with the input
+data is created in the database for the currently active user. Otherwise, there is no
+change to the system.
+
+Version 1.3
+
+P a g e 19 | 30
+
+Delete Record (DER)
+Name
+DER
+Syntax
+DER <recordID>
+Input
+recordID
+The recordID for a record in the database.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+No recordID
+Invalid recordID
+RecordID not found
+OK
+Description
+This operation is used to delete a record from a database. Several conditions must be
+met for the operation to succeed:
+1. A non-admin user must be currently logged-in.
+2. The command must include a valid recordID for a record that exists in the
+database for the active user.
+If these conditions are satisfied, the operation succeeds and the record in the database
+for the currently active user that matches the recordID is deleted. Otherwise, there is
+no change to the system.
+
+Version 1.3
+
+P a g e 20 | 30
+
+Edit Record (EDR)
+Name
+EDR
+Syntax
+EDR <recordID> <field1=value1> [<field2=value2> ...]
+Input
+recordID
+The recordID for a record in the database.
+field data
+One or more record field label=value pairs. At least one is required.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+No recordID
+Invalid recordID
+RecordID not found
+One or more invalid record data fields
+OK
+Description
+This operation is used to change field values in a record in the currently active user’s
+database. Several conditions must be met for the operation to succeed:
+1. A non-admin user must be currently logged-in.
+2. The command must include a valid recordID for a record that exists in the
+database for the active user.
+3. All of the new fields and field values must be valid and in a valid size and format.
+If these conditions are satisfied, the operation succeeds and the record in the database
+for the currently active user that matches the recordID is deleted. Otherwise, there is
+no change to the system.
+
+Version 1.3
+
+P a g e 21 | 30
+
+Read Record (RER)
+Name
+RER
+Syntax
+RER <recordID> [<fieldname> ...]
+Input
+recordID
+The recordID for a record in the database.
+fieldname
+One or more field names. These are optional. If no field name is specified, all
+fields in the record are returned.
+E.g., RER Bob SN PPH
+Output
+The contents of the record, using the “fieldname=value” format. For example
+Bob SN=Smith PPH=8805551212
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+Invalid recordID
+Invalid fieldname(s)
+No record found
+OK
+Description
+This operation is used to display a record in the database of the currently active user. If
+no recordID is specified then every record in the database for the currently active user
+will be displayed. Several conditions must be met for the operation to succeed:
+1. A non-admin user must be currently logged-in.
+2. The command must include a valid recordID and the recordID identifies a record
+that exists in the active user’s database.
+3. All specified fieldnames must be valid.
+
+Version 1.3
+
+P a g e 22 | 30
+
+If these conditions are satisfied, the operation succeeds and the record in the database
+for the currently active user that matches the recordID is displayed.
+There is no change to the system whether the operation succeeds or not.
+
+Version 1.3
+
+P a g e 23 | 30
+
+Read All Records (RAR)
+Name
+REA
+Syntax
+REA [<fieldname> ...]
+Input
+fieldname
+One or more field names. These are optional. If no field name is specified, all
+fields in the records are returned.
+E.g., REA SN PPH
+Output
+All records for the active user with the specified fields, using the “fieldname=value”
+format. For example
+Bob SN=Smith PPH=8805551212
+Sue SN=Jones PPH=8005551217
+
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+Invalid fieldname(s)
+No record found
+OK
+Description
+This operation is used to display all records in the database of the currently active user.
+Several conditions must be met for the operation to succeed:
+1. A non-admin user must be currently logged-in.
+2. All specified fieldnames must be valid.
+If these conditions are satisfied, the operation succeeds and the entire database for the
+active user is displayed, one record per line.
+There is no change to the system whether the operation succeeds or not.
+
+Version 1.3
+
+P a g e 24 | 30
+
+Import Database (IMD)
+Name
+IMD
+Syntax
+IMD <Input_File>
+Input
+Input_File
+The file name of a database file.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+No Input_file specified
+Invalid Input_file name
+Can’t open Input_file
+Input_file invalid format
+Duplicate recordID
+OK
+Description
+This operation is used to import a file of database records. The records in the file are
+added to the database for the currently active user. Several conditions must be met for
+the operation to succeed:
+1. A non-admin user must be currently logged-in
+2. A filename must be specified as an input parameter and the ABA must be able
+to follow the path to the file and have sufficient permissions to open it readonly.
+3. All data records in the Input_File must have unique recordIDs (within the file)
+and be in the correct record format.
+If these conditions are met, the operation succeeds and the records in the file specified
+by Input_file are added to the database for the currently active user. Imported records
+with recordIDs that are already in the database replace the original records.
+Otherwise, there is no change to the system.
+
+Version 1.3
+
+P a g e 25 | 30
+
+Export Database (EXD)
+Name
+EXD
+Syntax
+EXD <Output_file>
+Input
+Output_file
+The file name of a database file.
+Output
+Completion status codes are returned in the following order:
+No active login session
+Admin not authorized
+No Output_file specified
+Invalid Output_file name
+Can’t open Output_file
+Error writing Output_file
+OK
+Description
+This operation is used to export a file of database records. All of the records for the
+current user are appended to the output file in the standard address record format. If
+the file does not already exist, the ABA creates the file and writes the address records to
+it. Several conditions must be met for the operation to succeed:
+1. A non-admin user must be currently logged-in
+2. A filename must be specified as an input parameter and the ABA must be able
+to follow the path to the file and have sufficient permissions to open it for
+writing.
+If these conditions are met, the operation succeeds and the records in the database for the current user
+are appended to the file specified by Output_file. There is no change to the ABA system.
+
+Version 1.3
+
+P a g e 26 | 30
+
+Miscellaneous Commands
+Help (HLP)
+Name
+HLP
+Syntax
+HLP [<command name>]
+Input
+Command name
+This parameter specifies one of the commands. The parameter is optional.
+Output
+The command syntax for the command identified by the input parameter, as specified in
+this document. If no command is specified then print the command syntax for all
+commands.
+Completion status codes:
+OK
+Description
+This operation prints a list of commands accepted by the system. There is no change to
+the system.
+
+Version 1.3
+
+P a g e 27 | 30
+
+Who Am I (WAI)
+Name
+WAI
+Syntax
+WAI
+Input
+None
+Output
+Completion status codes:
+OK
+Description
+This operation returns the active userID. It always succeeds.
+
+Version 1.3
+
+P a g e 28 | 30
+
+Exit (EXT)
+Name
+EXT
+Syntax
+EXT
+Input
+None
+Output
+Completion status codes:
+OK
+Description
+This operation closes the open session, if any, and exits the program. It always succeeds.
+
+Version 1.3
+
+P a g e 29 | 30
+
+Unrecognized Commands
+Any command that is not one of the recognized commands returns the following completion code:
+Unrecognized command
+
+Version 1.3
+
+P a g e 30 | 30
+
+
