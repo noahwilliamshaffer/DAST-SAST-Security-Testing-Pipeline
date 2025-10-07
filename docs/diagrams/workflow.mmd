@@ -1,0 +1,41 @@
+flowchart TD
+    Start([GitHub Action Triggered<br/>Push/PR/Schedule]) --> Checkout[Checkout Repository]
+    
+    Checkout --> Setup[Setup Environment<br/>Install Dependencies]
+    
+    Setup --> BuildApp[Build Docker Container<br/>Vulnerable Web Application]
+    
+    BuildApp --> StartApp[Start Application<br/>Web Server + Database]
+    
+    StartApp --> Branch{Parallel Execution}
+    
+    Branch -->|Path 1| SAST[Run SonarQube Scanner<br/>Static Analysis]
+    Branch -->|Path 2| DAST[Run OWASP ZAP<br/>Dynamic Analysis]
+    
+    SAST --> SASTReport[Generate SAST Report<br/>sonarqube-results.json]
+    DAST --> DASTReport[Generate DAST Report<br/>zap-results.json]
+    
+    SASTReport --> Merge{Wait for Both Scans}
+    DASTReport --> Merge
+    
+    Merge --> Parse[Run Pandas Script<br/>Parse JSON Reports]
+    
+    Parse --> Analyze[Analyze Vulnerabilities<br/>Categorize by Severity]
+    
+    Analyze --> Visualize[Generate Visualizations<br/>Charts & Graphs]
+    
+    Visualize --> CreateCharts[Create Output Images:<br/>- Severity Distribution<br/>- Vulnerability Types<br/>- Trend Analysis<br/>- Comparison Charts]
+    
+    CreateCharts --> Upload[Upload Artifacts<br/>to GitHub Actions]
+    
+    Upload --> Notify[Generate Summary Report<br/>in GitHub UI]
+    
+    Notify --> End([Workflow Complete<br/>View Results in Artifacts])
+    
+    style Start fill:#4CAF50,color:#fff
+    style End fill:#4CAF50,color:#fff
+    style SAST fill:#FF9800
+    style DAST fill:#FF9800
+    style Visualize fill:#9C27B0,color:#fff
+    style Upload fill:#2196F3,color:#fff
+

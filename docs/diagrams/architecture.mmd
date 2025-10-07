@@ -1,0 +1,45 @@
+graph TB
+    subgraph "Source Code Repository"
+        A[Source Code<br/>Vulnerable Web App]
+    end
+    
+    subgraph "Security Analysis Tools"
+        B[SonarQube Server<br/>Static Analysis SAST]
+        C[OWASP ZAP Scanner<br/>Dynamic Analysis DAST]
+    end
+    
+    subgraph "Application Environment"
+        D[Docker Container<br/>Web Application]
+        E[Database<br/>PostgreSQL/MySQL]
+    end
+    
+    subgraph "Data Processing & Visualization"
+        F[Pandas Script<br/>Report Parser]
+        G[Visualization Output<br/>Charts & Graphs]
+    end
+    
+    subgraph "Results Storage"
+        H[JSON Reports<br/>Scan Results]
+        I[GitHub Artifacts<br/>Generated Images]
+    end
+    
+    A -->|Static Code Analysis| B
+    A -->|Build & Deploy| D
+    D -->|Database Connection| E
+    D -->|Runtime Scanning| C
+    B -->|Export Findings| H
+    C -->|Export Results| H
+    H -->|Parse & Analyze| F
+    F -->|Generate Charts| G
+    G -->|Upload| I
+    
+    style A fill:#e1f5ff
+    style B fill:#fff4e1
+    style C fill:#fff4e1
+    style D fill:#e8f5e9
+    style E fill:#e8f5e9
+    style F fill:#f3e5f5
+    style G fill:#f3e5f5
+    style H fill:#fce4ec
+    style I fill:#fce4ec
+

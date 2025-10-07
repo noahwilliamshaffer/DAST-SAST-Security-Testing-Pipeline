@@ -1,0 +1,49 @@
+sequenceDiagram
+    participant GH as GitHub Actions
+    participant App as Vulnerable App
+    participant SQ as SonarQube
+    participant ZAP as OWASP ZAP
+    participant Parser as Pandas Parser
+    participant Viz as Visualization Engine
+    participant Art as Artifacts Storage
+
+    GH->>App: Deploy Application
+    activate App
+    
+    par Static Analysis
+        GH->>SQ: Scan Source Code
+        activate SQ
+        SQ->>SQ: Analyze Code Quality<br/>Detect Security Issues
+        SQ-->>GH: SAST Results (JSON)
+        deactivate SQ
+    and Dynamic Analysis
+        GH->>ZAP: Scan Running Application
+        activate ZAP
+        ZAP->>App: Send Test Requests<br/>SQL Injection, XSS, etc.
+        App-->>ZAP: Responses
+        ZAP->>ZAP: Analyze Responses<br/>Identify Vulnerabilities
+        ZAP-->>GH: DAST Results (JSON)
+        deactivate ZAP
+    end
+    
+    deactivate App
+    
+    GH->>Parser: Process JSON Reports
+    activate Parser
+    Parser->>Parser: Load SAST Data
+    Parser->>Parser: Load DAST Data
+    Parser->>Parser: Normalize & Categorize<br/>by Severity & Type
+    Parser-->>Viz: Structured DataFrame
+    deactivate Parser
+    
+    activate Viz
+    Viz->>Viz: Create Bar Charts<br/>Severity Distribution
+    Viz->>Viz: Create Pie Charts<br/>Vulnerability Types
+    Viz->>Viz: Create Line Graphs<br/>Trend Analysis
+    Viz->>Viz: Create Comparison Charts<br/>SAST vs DAST
+    Viz-->>Art: PNG/SVG Images
+    deactivate Viz
+    
+    Art-->>GH: Download Artifacts
+    GH->>GH: Display Summary in PR/Action
+
