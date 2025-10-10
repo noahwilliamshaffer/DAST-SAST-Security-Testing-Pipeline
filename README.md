@@ -234,7 +234,7 @@ sequenceDiagram
 
 ## 🧩 Components
 
-### 1. SonarQube (SAST)
+### 1. SonarQube (SAST) ✅ IMPLEMENTED
 
 **What it does**: Analyzes your source code to find bugs, vulnerabilities, and code quality issues.
 
@@ -244,10 +244,17 @@ sequenceDiagram
 - Tracks code coverage from tests
 - Shows technical debt
 - Supports 25+ programming languages
+- **Industry Standard**: Used by 400,000+ organizations worldwide
 
 **How it works**: SonarQube reads your source files and uses pattern matching and data flow analysis to identify potential security issues without running the code.
 
-### 2. OWASP ZAP (DAST)
+**In This Project**:
+- Runs in Docker container
+- Scans Python code in dbaba application
+- Exports JSON results for visualization
+- Web UI available at http://localhost:9000
+
+### 2. OWASP ZAP (DAST) ✅ IMPLEMENTED
 
 **What it does**: Tests your running web application by simulating attacks.
 
@@ -258,10 +265,18 @@ sequenceDiagram
 - AJAX spider for modern single-page apps
 - API scanning support
 - Completely free and open-source
+- **Industry Standard**: Most widely used DAST tool globally
 
 **How it works**: ZAP acts like an attacker, sending various types of malicious requests to your application and analyzing the responses to find vulnerabilities like SQL injection, XSS, and authentication issues.
 
 **Official Site**: [zaproxy.org](https://www.zaproxy.org/)
+
+**In This Project**:
+- Runs in Docker container (daemon mode)
+- Spiders and actively scans DBABA web application
+- Tests for OWASP Top 10 vulnerabilities
+- Exports HTML, XML, and JSON reports
+- Results visualized in combined dashboard
 
 ### 3. Pandas Visualization Script
 
@@ -295,41 +310,69 @@ A deliberately insecure web application used for demonstration and testing purpo
 
 ### Prerequisites
 
-- Docker and Docker Compose
-- Python 3.9 or higher
-- Git
-- GitHub account (for Actions)
+- **Docker** and **Docker Compose**
+- **Python 3.9+** with pip
+- **Git**
+- **curl**, **jq**, **wget** (for scripts)
 
-### Local Setup
+### Quick Start (Complete Pipeline)
 
 ```bash
 # Clone the repository
-git clone https://github.com/noahwilliamshaffer/Dast-Sast.git
-cd Dast-Sast
+git clone https://github.com/noahwilliamshaffer/dbaba-security-testing.git
+cd dbaba-security-testing
 
 # Install Python dependencies
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 
-# Start the vulnerable application
+# Run complete SAST + DAST pipeline
+bash scripts/run_all_scans.sh
+```
+
+This will:
+1. Start SonarQube, OWASP ZAP, and DBABA app in Docker
+2. Run SAST scan with SonarQube
+3. Run DAST scan with OWASP ZAP
+4. Generate visual reports and charts
+5. Create comprehensive HTML report
+
+**Time:** ~10-15 minutes (first run)
+
+### Step-by-Step Manual Execution
+
+```bash
+# 1. Start services
 docker-compose up -d
 
-# Run SAST scan (requires SonarQube server)
-sonar-scanner
+# Wait 2-3 minutes for services to start
 
-# Run DAST scan
-zap-cli quick-scan --self-contained http://localhost:8080
+# 2. Run SonarQube SAST scan
+bash scripts/run_sonarqube_scan.sh
 
-# Generate visualizations
-python scripts/visualize_results.py
+# 3. Run OWASP ZAP DAST scan
+bash scripts/run_zap_scan.sh
+
+# 4. Generate combined visualizations
+python3 scripts/visualize_combined_results.py
+
+# 5. View results
+# - SonarQube UI: http://localhost:9000 (admin/admin)
+# - ZAP Report: results/zap/zap_report.html
+# - Combined Report: results/visualizations/combined_security_report.html
 ```
+
+### Detailed Instructions
+
+See **[SCAN_GUIDE.md](SCAN_GUIDE.md)** for complete documentation including:
+- Detailed setup instructions
+- Troubleshooting guide
+- Configuration options
+- Results interpretation
+- CI/CD integration examples
 
 ### GitHub Actions Setup
 
-1. Fork this repository
-2. Enable GitHub Actions in repository settings
-3. Configure secrets (if needed for SonarQube cloud)
-4. Push code or create PR to trigger workflow
-5. View results in Actions tab and download artifacts
+See `.github/workflows/` directory for example CI/CD workflows (coming soon)
 
 ---
 
