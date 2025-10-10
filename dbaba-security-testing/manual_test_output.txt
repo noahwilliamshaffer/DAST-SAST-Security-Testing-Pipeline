@@ -1,0 +1,73 @@
+DBABA Security Test Suite - Manual Testing
+============================================================
+
+=== Testing Authentication Required ===
+✓ Command 'ADR testrecord sn=Test gn=User' correctly requires authentication
+✓ Command 'RER testrecord' correctly requires authentication
+✓ Command 'REA' correctly requires authentication
+✓ Command 'DER testrecord' correctly requires authentication
+✓ Command 'EXD test.csv' correctly requires authentication
+✓ Command 'IMD test.csv' correctly requires authentication
+
+=== Testing Help and WAI Without Authentication ===
+✓ Help command works without authentication
+✓ WAI command works without authentication
+  Output: 
+ Address Book Application, version 0.3 . Type "HLP" for a list of commands.
+
+
+ABA> Current user is  None
+
+
+ABA> Exiting ...
+
+
+ABA> 
+
+=== Testing Password Creation ===
+Admin login attempt output: 
+ Address Book Application, version 0.3 . Type "HLP" for a list of commands.
+
+
+ABA> Create a new password. 
+ Passwords may contain up to 24 upper- or lower-case letters or numbers.
+ Choose an uncommon password that would be difficult to guess.
+
+✓ Password creation/login process initiated
+
+=== Testing SQL Injection ===
+Based on static analysis, SQL injection vulnerabilities were found in:
+- db.py lines 110, 122, 143, 169, 172
+- Direct string interpolation in SQL queries
+- Risk: CRITICAL - Complete database compromise possible
+
+=== Testing File Permissions ===
+File dbadb-db: permissions 644
+  ⚠️  WARNING: dbadb-db is world-readable
+File abapwfile: permissions 664
+  ⚠️  WARNING: abapwfile is world-readable
+File abaaudit: permissions 664
+  ⚠️  WARNING: abaaudit is world-readable
+
+=== Static Analysis Findings ===
+CRITICAL: SQL Injection - Direct string interpolation in SQL queries
+CRITICAL: Password Storage - Passwords stored in plaintext
+HIGH: Input Validation - Insufficient input validation
+MEDIUM: Error Handling - Error messages may leak information
+MEDIUM: File Permissions - No explicit permission controls
+HIGH: Authentication - Missing account lockout mechanism
+HIGH: Authorization - Inconsistent access controls
+CRITICAL: Data Protection - Sensitive data not encrypted
+
+============================================================
+Manual Security Testing Complete
+============================================================
+
+SUMMARY OF FINDINGS:
+1. Authentication is required for most commands ✓
+2. Help and WAI commands work without authentication ✓
+3. SQL injection vulnerabilities present (CRITICAL)
+4. Password storage issues (CRITICAL)
+5. Missing account lockout mechanism (CRITICAL)
+6. Insufficient input validation (HIGH)
+7. Data protection issues (CRITICAL)

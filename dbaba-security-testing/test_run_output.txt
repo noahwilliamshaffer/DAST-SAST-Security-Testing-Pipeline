@@ -1,0 +1,321 @@
+Traceback (most recent call last):
+  File "/home/vboxuser/Desktop/Assignment 4.1/simple_test_runner.py", line 33, in test_password_complexity
+    output = client.login("admin", "short")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 55, in login
+    output = self.send_command(f"LIN {username}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 47, in send_command
+    self.process.expect("ABA>")
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 354, in expect
+    return self.expect_list(compiled_pattern_list,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 383, in expect_list
+    return exp.expect_loop(timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 181, in expect_loop
+    return self.timeout(e)
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 144, in timeout
+    raise exc
+pexpect.exceptions.TIMEOUT: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd646a80>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 488661
+child_fd: 7
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+Traceback (most recent call last):
+  File "/home/vboxuser/Desktop/Assignment 4.1/simple_test_runner.py", line 96, in test_admin_restrictions
+    client.login("admin", "AdminPass123")
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 55, in login
+    output = self.send_command(f"LIN {username}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 47, in send_command
+    self.process.expect("ABA>")
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 354, in expect
+    return self.expect_list(compiled_pattern_list,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 383, in expect_list
+    return exp.expect_loop(timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 181, in expect_loop
+    return self.timeout(e)
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 144, in timeout
+    raise exc
+pexpect.exceptions.TIMEOUT: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd668fe0>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 490742
+child_fd: 8
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+Traceback (most recent call last):
+  File "/home/vboxuser/Desktop/Assignment 4.1/simple_test_runner.py", line 126, in test_account_lockout
+    client.login("admin", "AdminPass123")
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 55, in login
+    output = self.send_command(f"LIN {username}")
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 47, in send_command
+    self.process.expect("ABA>")
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 354, in expect
+    return self.expect_list(compiled_pattern_list,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 383, in expect_list
+    return exp.expect_loop(timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 181, in expect_loop
+    return self.timeout(e)
+           ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 144, in timeout
+    raise exc
+pexpect.exceptions.TIMEOUT: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd6fd760>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 492473
+child_fd: 9
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+Traceback (most recent call last):
+  File "/home/vboxuser/Desktop/Assignment 4.1/simple_test_runner.py", line 161, in test_lin_bug
+    client.add_user("user2")
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 93, in add_user
+    return self.send_command(f"ADU {username}")
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/vboxuser/Desktop/Assignment 4.1/tests/pexpect_helpers.py", line 47, in send_command
+    self.process.expect("ABA>")
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 354, in expect
+    return self.expect_list(compiled_pattern_list,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/spawnbase.py", line 383, in expect_list
+    return exp.expect_loop(timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 179, in expect_loop
+    return self.eof(e)
+           ^^^^^^^^^^^
+  File "/usr/lib/python3/dist-packages/pexpect/expect.py", line 122, in eof
+    raise exc
+pexpect.exceptions.EOF: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7a00dd6fd940>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b''
+before (last 100 chars): b'led\r\n============================================================\r\nLIN admin\r\nADU user1\r\nADU user2\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: 0
+flag_eof: True
+pid: 494127
+child_fd: 10
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+DBABA Security Test Suite
+============================================================
+
+=== Testing Password Complexity ===
+✗ Password complexity test failed: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd646a80>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 488661
+child_fd: 7
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+
+=== Testing Authentication Required ===
+Command 'ADR testrecord' without auth: ADR testrecord
+No active login session
+✓ Command 'ADR testrecord' correctly requires authentication
+Command 'RER testrecord' without auth: RER testrecord
+No active login session
+✓ Command 'RER testrecord' correctly requires authentication
+Command 'REA' without auth: REA
+No active login session
+✓ Command 'REA' correctly requires authentication
+Command 'DER testrecord' without auth: DER testrecord
+No active login session
+✓ Command 'DER testrecord' correctly requires authentication
+
+=== Testing Admin Restrictions ===
+✗ Admin restrictions test failed: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd668fe0>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 490742
+child_fd: 8
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+
+=== Testing Account Lockout ===
+✗ Account lockout test failed: Timeout exceeded.
+<pexpect.pty_spawn.spawn object at 0x7a00dd6fd760>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+before (last 100 chars): b' or numbers.\r\n Choose an uncommon password that would be difficult to guess.\r\n\r\nEnter new password: '
+after: <class 'pexpect.exceptions.TIMEOUT'>
+match: None
+match_index: None
+exitstatus: None
+flag_eof: False
+pid: 492473
+child_fd: 9
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+
+=== Testing LIN Elevation Bug ===
+✗ LIN bug test failed: End Of File (EOF). Exception style platform.
+<pexpect.pty_spawn.spawn object at 0x7a00dd6fd940>
+command: /usr/bin/python3
+args: ['/usr/bin/python3', '/home/vboxuser/Desktop/Assignment 4.1/M4-dbaba-2024/dbaba/dbaba.py']
+buffer (last 100 chars): b''
+before (last 100 chars): b'led\r\n============================================================\r\nLIN admin\r\nADU user1\r\nADU user2\r\n'
+after: <class 'pexpect.exceptions.EOF'>
+match: None
+match_index: None
+exitstatus: 0
+flag_eof: True
+pid: 494127
+child_fd: 10
+closed: False
+timeout: 10
+delimiter: <class 'pexpect.exceptions.EOF'>
+logfile: None
+logfile_read: None
+logfile_send: None
+maxread: 2000
+ignorecase: False
+searchwindowsize: None
+delaybeforesend: 0.05
+delayafterclose: 0.1
+delayafterterminate: 0.1
+searcher: searcher_re:
+    0: re.compile(b'ABA>')
+
+============================================================
+Test Summary: 4 passed, 1 failed
+============================================================

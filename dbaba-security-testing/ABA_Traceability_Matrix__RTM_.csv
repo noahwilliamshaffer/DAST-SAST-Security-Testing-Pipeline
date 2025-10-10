@@ -1,0 +1,9 @@
+SR #,Requirement (from spec / assignment),Threat(s) mitigated,Test ID(s),Automated?,Priority,Result (Pass/Fail),Evidence / Artifact,Notes
+SR-1,Lockout after 3 consecutive failed login attempts; subsequent attempts blocked for ≥ 1 minute.,Online brute force / credential stuffing,T-AUTH-01,Yes (pytest+pexpect),High,,test_run_output.txt; screenshot of timing,Timing tolerance ±2–3s acceptable
+SR-2,"Enforce strong password policy (e.g., minimum 12 chars or passphrase rules per spec).",Weak passwords / guessing,T-AUTH-02,Yes,High,,pytest logs,Rejects too-short or illegal characters per CLI rules
+SR-3,Admin must NOT be able to read users’ Confidential Information (CI); privilege separation.,Privilege abuse / data privacy breach,T-PRIV-01,Yes,High,,pytest logs,Expect denial or redaction of CI for admin
+SR-4,"Robust input validation; block injection and path traversal on commands (e.g., EXD/IMD).",Command/file injection; path traversal,T-INP-01..03,Yes,High,,pytest logs,Reject export to ../../ or absolute paths
+SR-5,Sensitive data not stored in plaintext at rest; appropriate file permissions.,Data-at-rest exposure,T-STOR-01,Yes (heuristic scan),High,,pytest logs; file scan results,Search for unique marker not found in data files
+SR-6,"Errors/logs must not leak secrets (passwords, CI).",Information disclosure,T-LOG-01,Yes,High,,pytest logs; sanitized log excerpts,Check error messages and log files
+SR-7,Graceful handling of large/malformed inputs (DoS bounds).,Denial of Service,T-DOS-01,Semi (timing/resource check),Medium,,Timing notes; resource observations,Import ~10k records; malformed file behavior
+SR-8,Session hygiene: tokens/credentials invalid after logout; expiry enforced if applicable.,Session hijack/reuse,T-SESS-01,Yes,Medium,,pytest logs,If ABA implements sessions; else mark N/A
