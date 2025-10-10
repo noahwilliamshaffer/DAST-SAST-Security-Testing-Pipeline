@@ -1,0 +1,14 @@
+# Security Analysis Tools
+bandit==1.7.5
+safety==3.0.1
+pylint==3.0.3
+
+# Data Processing and Visualization
+pandas==2.1.4
+matplotlib==3.8.2
+seaborn==0.13.0
+numpy==1.26.3
+
+# Report Generation
+jinja2==3.1.3
+

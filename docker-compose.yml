@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  # SonarQube for SAST (Static Analysis)
+  sonarqube:
+    image: sonarqube:community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      - SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - security-testing
+
+  # OWASP ZAP for DAST (Dynamic Analysis)
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    container_name: owasp-zap
+    command: zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.addrs.addr.name=.* -config api.addrs.addr.regex=true -config api.key=changeme
+    ports:
+      - "8080:8080"
+    networks:
+      - security-testing
+
+  # DBABA Web Application (Target for DAST scanning)
+  dbaba-app:
+    build:
+      context: ./dbaba-security-testing/M4-dbaba-2024
+      dockerfile: Dockerfile
+    container_name: dbaba-app
+    ports:
+      - "5000:5000"
+    networks:
+      - security-testing
+    environment:
+      - FLASK_APP=dbaba.py
+      - FLASK_ENV=development
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+
+networks:
+  security-testing:
+    driver: bridge
+
