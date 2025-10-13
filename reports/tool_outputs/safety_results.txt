@@ -1,0 +1,132 @@
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
+[31m[1mDEPRECATED: [0m[33m[1mthis command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.[0m
+
+
+[32mWe highly encourage switching to the new [0m[32m[1m`scan`[0m[32m command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
++==============================================================================+
+
+                               /$$$$$$            /$$
+                              /$$__  $$          | $$
+           /$$$$$$$  /$$$$$$ | $$  \__//$$$$$$  /$$$$$$   /$$   /$$
+          /$$_____/ |____  $$| $$$$   /$$__  $$|_  $$_/  | $$  | $$
+         |  $$$$$$   /$$$$$$$| $$_/  | $$$$$$$$  | $$    | $$  | $$
+          \____  $$ /$$__  $$| $$    | $$_____/  | $$ /$$| $$  | $$
+          /$$$$$$$/|  $$$$$$$| $$    |  $$$$$$$  |  $$$$/|  $$$$$$$
+         |_______/  \_______/|__/     \_______/   \___/   \____  $$
+                                                          /$$  | $$
+                                                         |  $$$$$$/
+  by safetycli.com                                        \______/
+
++==============================================================================+
+
+ [1mREPORT[0m 
+
+  Safety [1mv3.6.2[0m is scanning for [1mVulnerabilities[0m[1m...[0m
+[1m  Scanning dependencies[0m in your [1mfiles:[0m
+
+  -> /home/vboxuser/Desktop/Dast_Sast/requirements.txt
+
+  Using [1mopen-source vulnerability database[0m
+[1m  Found and scanned 8 packages[0m
+  Timestamp [1m2025-10-10 05:31:26[0m
+[1m  5[0m[1m vulnerabilities reported[0m
+[1m  0[0m[1m vulnerabilities ignored[0m
+
++==============================================================================+
+ [1mVULNERABILITIES REPORTED[0m 
++==============================================================================+
+
+[31m-> Vulnerability found in jinja2 version 3.1.3[0m
+[1m   Vulnerability ID: [0m71591
+[1m   Affected spec: [0m<3.1.4
+[1m   ADVISORY: [0mJinja is an extensible templating engine. The `xmlattr`
+   filter in affected versions of Jinja accepts keys containing non-...
+[1m   CVE-2024-34064[0m
+[1m   For more information about this vulnerability, visit
+   [0mhttps://data.safetycli.com/v/71591/97c[0m
+   To ignore this vulnerability, use PyUp vulnerability id 71591 in safety’s
+   ignore command-line argument or add the ignore to your safety policy file.
+
+
+[31m-> Vulnerability found in jinja2 version 3.1.3[0m
+[1m   Vulnerability ID: [0m74735
+[1m   Affected spec: [0m>=3.0.0a1,<3.1.5
+[1m   ADVISORY: [0mA vulnerability in the Jinja compiler allows an attacker
+   who can control both the content and filename of a template to execute...
+[1m   CVE-2024-56201[0m
+[1m   For more information about this vulnerability, visit
+   [0mhttps://data.safetycli.com/v/74735/97c[0m
+   To ignore this vulnerability, use PyUp vulnerability id 74735 in safety’s
+   ignore command-line argument or add the ignore to your safety policy file.
+
+
+[31m-> Vulnerability found in jinja2 version 3.1.3[0m
+[1m   Vulnerability ID: [0m76378
+[1m   Affected spec: [0m<3.1.5
+[1m   ADVISORY: [0mAn oversight in how the Jinja sandboxed environment
+   detects calls to str.format allows an attacker who controls the content...
+[1m   CVE-2024-56326[0m
+[1m   For more information about this vulnerability, visit
+   [0mhttps://data.safetycli.com/v/76378/97c[0m
+   To ignore this vulnerability, use PyUp vulnerability id 76378 in safety’s
+   ignore command-line argument or add the ignore to your safety policy file.
+
+
+[31m-> Vulnerability found in jinja2 version 3.1.3[0m
+[1m   Vulnerability ID: [0m75976
+[1m   Affected spec: [0m<3.1.6
+[1m   ADVISORY: [0mPrior to 3.1.6, an oversight in how the Jinja sandboxed
+   environment interacts with the |attr filter allows an attacker that...
+[1m   CVE-2025-27516[0m
+[1m   For more information about this vulnerability, visit
+   [0mhttps://data.safetycli.com/v/75976/97c[0m
+   To ignore this vulnerability, use PyUp vulnerability id 75976 in safety’s
+   ignore command-line argument or add the ignore to your safety policy file.
+
+
+[31m-> Vulnerability found in bandit version 1.7.5[0m
+[1m   Vulnerability ID: [0m64484
+[1m   Affected spec: [0m<1.7.7
+[1m   ADVISORY: [0mBandit 1.7.7 identifies the str.replace method as a
+   potential risk for SQL injection because it can be misused in...
+[1m   PVE-2024-64484[0m
+[1m   For more information about this vulnerability, visit
+   [0mhttps://data.safetycli.com/v/64484/97c[0m
+   To ignore this vulnerability, use PyUp vulnerability id 64484 in safety’s
+   ignore command-line argument or add the ignore to your safety policy file.
+
+
++==============================================================================+
+   [32m[1mREMEDIATIONS[0m
+
+  5 vulnerabilities were reported in 2 packages. For detailed remediation & 
+  fix recommendations, upgrade to a commercial license. 
+
++==============================================================================+
+
+ Scan was completed. 5 vulnerabilities were reported. 
+
++==============================================================================+[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+
+[31m[1mDEPRECATED: [0m[33m[1mthis command (`check`) has been DEPRECATED, and will be unsupported beyond 01 June 2024.[0m
+
+
+[32mWe highly encourage switching to the new [0m[32m[1m`scan`[0m[32m command which is easier to use, more powerful, and can be set up to mimic the deprecated command if required.[0m
+
+
+[33m[1m+===========================================================================================================================================================================================+[0m
+
+

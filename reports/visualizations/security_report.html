@@ -1,0 +1,1055 @@
+
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SAST Security Scan Report</title>
+        <style>
+            body {
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                margin: 0;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+                background-color: white;
+                padding: 30px;
+                border-radius: 10px;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            }
+            h1 {
+                color: #2c3e50;
+                border-bottom: 3px solid #3498db;
+                padding-bottom: 10px;
+            }
+            h2 {
+                color: #34495e;
+                margin-top: 30px;
+            }
+            .stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                gap: 20px;
+                margin: 20px 0;
+            }
+            .stat-box {
+                padding: 20px;
+                border-radius: 8px;
+                text-align: center;
+                color: white;
+            }
+            .stat-box h3 {
+                margin: 0;
+                font-size: 36px;
+            }
+            .stat-box p {
+                margin: 5px 0 0 0;
+                font-size: 14px;
+            }
+            .critical { background-color: #d32f2f; }
+            .high { background-color: #f57c00; }
+            .medium { background-color: #fbc02d; }
+            .low { background-color: #388e3c; }
+            .info { background-color: #2196F3; }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin: 20px 0;
+            }
+            th, td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+            th {
+                background-color: #3498db;
+                color: white;
+                font-weight: bold;
+            }
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+            .severity-badge {
+                padding: 5px 10px;
+                border-radius: 3px;
+                color: white;
+                font-weight: bold;
+                font-size: 12px;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+                margin: 20px 0;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+            .timestamp {
+                text-align: center;
+                color: #7f8c8d;
+                font-style: italic;
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🔒 SAST Security Scan Report</h1>
+            <p><strong>Target Application:</strong> DBABA Address Book</p>
+            <p><strong>Scan Date:</strong> 2025-10-10 05:31:35</p>
+            
+            <h2>📊 Summary Statistics</h2>
+            <div class="stats">
+                <div class="stat-box info">
+                    <h3>308</h3>
+                    <p>Total Issues</p>
+                </div>
+                <div class="stat-box critical">
+                    <h3>0</h3>
+                    <p>Critical</p>
+                </div>
+                <div class="stat-box high">
+                    <h3>4</h3>
+                    <p>High Severity</p>
+                </div>
+                <div class="stat-box medium">
+                    <h3>77</h3>
+                    <p>Medium Severity</p>
+                </div>
+                <div class="stat-box low">
+                    <h3>227</h3>
+                    <p>Low Severity</p>
+                </div>
+            </div>
+            
+            <h2>📈 Visualizations</h2>
+            <img src="summary_report.png" alt="Summary Report">
+            <img src="severity_distribution.png" alt="Severity Distribution">
+            <img src="tool_comparison.png" alt="Tool Comparison">
+            <img src="issue_types.png" alt="Issue Types">
+            <img src="file_heatmap.png" alt="File Heatmap">
+            
+            <h2>📋 Detailed Findings</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tool</th>
+                        <th>Severity</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>File</th>
+                        <th>Line</th>
+                    </tr>
+                </thead>
+                <tbody>
+    
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>85</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>110</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>122</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>143</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>170</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>B608</td>
+                        <td>Possible SQL injection vector through string-based query construction....</td>
+                        <td>db.py</td>
+                        <td>172</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge high">HIGH</span></td>
+                        <td>B413</td>
+                        <td>The pyCrypto library and its module SHA256 are no longer actively maintained and have been deprecate...</td>
+                        <td>pwcrypto.py</td>
+                        <td>10</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge high">HIGH</span></td>
+                        <td>B413</td>
+                        <td>The pyCrypto library and its module bcrypt are no longer actively maintained and have been deprecate...</td>
+                        <td>pwcrypto.py</td>
+                        <td>12</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge high">HIGH</span></td>
+                        <td>B413</td>
+                        <td>The pyCrypto library and its module bcrypt_check are no longer actively maintained and have been dep...</td>
+                        <td>pwcrypto.py</td>
+                        <td>14</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Bandit</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>B105</td>
+                        <td>Possible hardcoded password: ''...</td>
+                        <td>pwmodule.py</td>
+                        <td>136</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>pwmodule.py</td>
+                        <td>4</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>pwmodule.py</td>
+                        <td>16</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>superfluous-parens</td>
+                        <td>Unnecessary parens after 'not' keyword...</td>
+                        <td>pwmodule.py</td>
+                        <td>39</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>pwmodule.py</td>
+                        <td>67</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>pwmodule.py</td>
+                        <td>128</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-newlines</td>
+                        <td>Trailing newlines...</td>
+                        <td>pwmodule.py</td>
+                        <td>212</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "PwSetup" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>15</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'accountdict' undefined at the module level...</td>
+                        <td>pwmodule.py</td>
+                        <td>16</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'accountschanged' undefined at the module level...</td>
+                        <td>pwmodule.py</td>
+                        <td>17</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>22</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>broad-exception-caught</td>
+                        <td>Catching too general exception Exception...</td>
+                        <td>pwmodule.py</td>
+                        <td>42</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>unspecified-encoding</td>
+                        <td>Using open without explicitly specifying an encoding...</td>
+                        <td>pwmodule.py</td>
+                        <td>25</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>unnecessary-negation</td>
+                        <td>Consider changing "not 'admin' in accountdict.keys()" to "'admin' not in accountdict.keys()"...</td>
+                        <td>pwmodule.py</td>
+                        <td>39</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-iterating-dictionary</td>
+                        <td>Consider iterating the dictionary directly instead of calling .keys()...</td>
+                        <td>pwmodule.py</td>
+                        <td>39</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>43</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-with</td>
+                        <td>Consider using 'with' for resource-allocating operations...</td>
+                        <td>pwmodule.py</td>
+                        <td>25</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "PwShutdown" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>52</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>53</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountschanged' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>54</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>56</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>singleton-comparison</td>
+                        <td>Comparison 'accountschanged == True' should be 'accountschanged is True' if checking for the singlet...</td>
+                        <td>pwmodule.py</td>
+                        <td>60</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>broad-exception-caught</td>
+                        <td>Catching too general exception Exception...</td>
+                        <td>pwmodule.py</td>
+                        <td>70</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>unspecified-encoding</td>
+                        <td>Using open without explicitly specifying an encoding...</td>
+                        <td>pwmodule.py</td>
+                        <td>62</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-f-string</td>
+                        <td>Formatting a regular string which could be an f-string...</td>
+                        <td>pwmodule.py</td>
+                        <td>66</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-f-string</td>
+                        <td>Formatting a regular string which could be an f-string...</td>
+                        <td>pwmodule.py</td>
+                        <td>68</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>71</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-with</td>
+                        <td>Consider using 'with' for resource-allocating operations...</td>
+                        <td>pwmodule.py</td>
+                        <td>62</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "GoodUsrID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>81</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>81</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>simplifiable-if-statement</td>
+                        <td>The if statement can be replaced with 'var = bool(test)'...</td>
+                        <td>pwmodule.py</td>
+                        <td>84</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "AccountExists" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>97</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>97</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>98</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>simplifiable-if-statement</td>
+                        <td>The if statement can be replaced with 'var = bool(test)'...</td>
+                        <td>pwmodule.py</td>
+                        <td>100</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-iterating-dictionary</td>
+                        <td>Consider iterating the dictionary directly instead of calling .keys()...</td>
+                        <td>pwmodule.py</td>
+                        <td>100</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "HasPassword" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>111</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>111</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>112</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "SetPassword" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>129</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>129</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>130</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'accountschanged' undefined at the module level...</td>
+                        <td>pwmodule.py</td>
+                        <td>131</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>133</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>singleton-comparison</td>
+                        <td>Comparison 'passwd != None' should be 'passwd is not None'...</td>
+                        <td>pwmodule.py</td>
+                        <td>135</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>141</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "Login" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>150</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>150</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>151</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>152</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>155</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>159</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>161</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "AddUsr" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>169</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>169</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>170</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'accountschanged' undefined at the module level...</td>
+                        <td>pwmodule.py</td>
+                        <td>171</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>174</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>176</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>178</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "DelUsr" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>188</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>188</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>189</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'accountschanged' undefined at the module level...</td>
+                        <td>pwmodule.py</td>
+                        <td>190</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>193</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>195</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>199</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "ListUsr" doesn't conform to snake_case naming style...</td>
+                        <td>pwmodule.py</td>
+                        <td>207</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'accountdict' but no assignment is done...</td>
+                        <td>pwmodule.py</td>
+                        <td>208</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>unused-import</td>
+                        <td>Unused import os...</td>
+                        <td>pwmodule.py</td>
+                        <td>6</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>unused-import</td>
+                        <td>Unused import re...</td>
+                        <td>pwmodule.py</td>
+                        <td>7</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>audit.py</td>
+                        <td>53</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-whitespace</td>
+                        <td>Trailing whitespace...</td>
+                        <td>audit.py</td>
+                        <td>76</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>trailing-newlines</td>
+                        <td>Trailing newlines...</td>
+                        <td>audit.py</td>
+                        <td>133</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "AuditSetup" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>13</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-undefined</td>
+                        <td>Global variable 'auditfile' undefined at the module level...</td>
+                        <td>audit.py</td>
+                        <td>14</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>16</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>broad-exception-caught</td>
+                        <td>Catching too general exception Exception...</td>
+                        <td>audit.py</td>
+                        <td>20</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>unspecified-encoding</td>
+                        <td>Using open without explicitly specifying an encoding...</td>
+                        <td>audit.py</td>
+                        <td>19</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>21</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-with</td>
+                        <td>Consider using 'with' for resource-allocating operations...</td>
+                        <td>audit.py</td>
+                        <td>19</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "AuditShutdown" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>30</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'auditfile' but no assignment is done...</td>
+                        <td>audit.py</td>
+                        <td>31</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>33</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>broad-exception-caught</td>
+                        <td>Catching too general exception Exception...</td>
+                        <td>audit.py</td>
+                        <td>37</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>38</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Function name "AuditWrite" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>47</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Argument name "userID" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>47</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge medium">MEDIUM</span></td>
+                        <td>global-variable-not-assigned</td>
+                        <td>Using global for 'auditfile' but no assignment is done...</td>
+                        <td>audit.py</td>
+                        <td>48</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>invalid-name</td>
+                        <td>Variable name "completionCode" doesn't conform to snake_case naming style...</td>
+                        <td>audit.py</td>
+                        <td>50</td>
+                    </tr>
+        
+                    <tr>
+                        <td>Pylint</td>
+                        <td><span class="severity-badge low">LOW</span></td>
+                        <td>consider-using-in</td>
+                        <td>Consider merging these comparisons with 'in' by using 'userID in ('', None)'. Use a set instead if e...</td>
+                        <td>audit.py</td>
+                        <td>54</td>
+                    </tr>
+        
+                </tbody>
+            </table>
+            
+            <p class="timestamp">Report generated by DAST-SAST Security Testing Pipeline</p>
+        </div>
+    </body>
+    </html>
+    

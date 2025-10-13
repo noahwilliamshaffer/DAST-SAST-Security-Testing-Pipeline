@@ -1,0 +1,121 @@
+Run started:2025-10-10 05:31:19.687986
+
+Test results:
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:85:30
+84	        try:
+85	             cursor.execute(f"INSERT INTO {abacfg.DBTNAME} VALUES {*recordvals,}")
+86	
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:110:25
+109	    try: # Find out first if any such records exist
+110	        cursor.execute(f"SELECT * FROM {abacfg.DBTNAME} WHERE {abacfg.DBFIELDS[0]} = '{uname}' AND {abacfg.DBFIELDS[1]} = '{recordid}'")
+111	        row =  cursor.fetchone()
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:122:26
+121	    try:
+122	         cursor.execute(f"DELETE FROM {abacfg.DBTNAME} WHERE {abacfg.DBFIELDS[0]} = '{uname}' AND {abacfg.DBFIELDS[1]} = '{recordid}'")
+123	
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:143:25
+142	    try: # 
+143	        cursor.execute(f"DELETE FROM {abacfg.DBTNAME} WHERE {abacfg.DBFIELDS[0]} = '{uname}'")
+144	    except Exception as e:
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:170:29
+169	        if recordid == '':
+170	            cursor.execute(f"SELECT * FROM {abacfg.DBTNAME} WHERE {abacfg.DBFIELDS[0]} = '{uname}'")
+171	        else:
+
+--------------------------------------------------
+>> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+   Severity: Medium   Confidence: Medium
+   CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b608_hardcoded_sql_expressions.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/db.py:172:29
+171	        else:
+172	            cursor.execute(f"SELECT * FROM {abacfg.DBTNAME} WHERE {abacfg.DBFIELDS[0]} = '{uname}' AND {abacfg.DBFIELDS[1]} = '{recordid}'")
+173	        records = cursor.fetchall()
+
+--------------------------------------------------
+>> Issue: [B413:blacklist] The pyCrypto library and its module SHA256 are no longer actively maintained and have been deprecated. Consider using pyca/cryptography library.
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_imports.html#b413-import-pycrypto
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/pwcrypto.py:10:0
+9	from base64 import b64encode
+10	from Crypto.Hash import SHA256
+11	#from Cryptodome.Hash import SHA256
+
+--------------------------------------------------
+>> Issue: [B413:blacklist] The pyCrypto library and its module bcrypt are no longer actively maintained and have been deprecated. Consider using pyca/cryptography library.
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_imports.html#b413-import-pycrypto
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/pwcrypto.py:12:0
+11	#from Cryptodome.Hash import SHA256
+12	from Crypto.Protocol.KDF import bcrypt
+13	#from Cryptodome.Protocol.KDF import bcrypt
+
+--------------------------------------------------
+>> Issue: [B413:blacklist] The pyCrypto library and its module bcrypt_check are no longer actively maintained and have been deprecated. Consider using pyca/cryptography library.
+   Severity: High   Confidence: High
+   CWE: CWE-327 (https://cwe.mitre.org/data/definitions/327.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/blacklists/blacklist_imports.html#b413-import-pycrypto
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/pwcrypto.py:14:0
+13	#from Cryptodome.Protocol.KDF import bcrypt
+14	from Crypto.Protocol.KDF import bcrypt_check
+15	#from Cryptodome.Protocol.KDF import bcrypt_check
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: ''
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.8.6/plugins/b105_hardcoded_password_string.html
+   Location: /home/vboxuser/Desktop/Dast_Sast/dbaba-security-testing/M4-dbaba-2024/dbaba/pwmodule.py:136:21
+135	    if passwd != None:
+136	        if passwd == '': # New account
+137	            accountdict.update({userID: ''})
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 864
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 1
+		Medium: 6
+		High: 3
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 7
+		High: 3
+Files skipped (0):
