@@ -819,237 +819,197 @@ sequenceDiagram
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Installation & Execution
 
-### Prerequisites
+### System Requirements
 
-- **Docker** and **Docker Compose**
-- **Python 3.9+** with pip
-- **Git**
-- **curl**, **jq**, **wget** (for scripts)
+- **Docker** 20.10+ and **Docker Compose** 2.0+
+- **Python** 3.9+ with pip
+- **Git** for repository cloning
+- **System utilities**: curl, jq, wget (for bash scripts)
 
-### Quick Start (Complete Pipeline)
+### Repository Setup
 
 ```bash
-# Clone the repository
-git clone https://github.com/noahwilliamshaffer/dbaba-security-testing.git
-cd dbaba-security-testing
+git clone https://github.com/noahwilliamshaffer/DAST-SAST-Security-Testing-Pipeline.git
+cd DAST-SAST-Security-Testing-Pipeline
 
 # Install Python dependencies
 pip3 install -r requirements.txt
+```
 
-# Run complete SAST + DAST pipeline
+### Automated Pipeline Execution
+
+```bash
+# Execute complete SAST + DAST pipeline
 bash scripts/run_all_scans.sh
 ```
 
-This will:
-1. Start SonarQube, OWASP ZAP, and DBABA app in Docker
-2. Run SAST scan with SonarQube
-3. Run DAST scan with OWASP ZAP
-4. Generate visual reports and charts
-5. Create comprehensive HTML report
+**Pipeline stages:**
+1. Docker infrastructure startup (SonarQube, ZAP, DBABA app)
+2. Parallel SAST execution (Bandit, Pylint, Safety, SonarQube)
+3. DAST execution (OWASP ZAP: spider → passive → active)
+4. Data aggregation and visualization
+5. Report generation (JSON, HTML, PNG)
 
-**Time:** ~10-15 minutes (first run)
+**Execution time:** ~15 minutes (first run includes Docker image pulls)
 
-### Step-by-Step Manual Execution
+### Manual Step-by-Step Execution
 
 ```bash
-# 1. Start services
+# 1. Start Docker services
 docker-compose up -d
 
-# Wait 2-3 minutes for services to start
+# 2. Wait for service readiness (2-3 minutes)
 
-# 2. Run SonarQube SAST scan
-bash scripts/run_sonarqube_scan.sh
+# 3. Execute SAST scans (parallel)
+python3 scripts/run_sast_scans.py
 
-# 3. Run OWASP ZAP DAST scan
+# 4. Execute DAST scan
 bash scripts/run_zap_scan.sh
 
-# 4. Generate combined visualizations
-python3 scripts/visualize_combined_results.py
+# 5. Execute SonarQube scan (optional)
+bash scripts/run_sonarqube_scan.sh
 
-# 5. View results
-# - SonarQube UI: http://localhost:9000 (admin/admin)
-# - ZAP Report: results/zap/zap_report.html
-# - Combined Report: results/visualizations/combined_security_report.html
+# 6. Generate visualizations
+python3 scripts/visualize_combined_results.py
 ```
 
-### Detailed Instructions
+### Results Access
 
-See **[SCAN_GUIDE.md](SCAN_GUIDE.md)** for complete documentation including:
-- Detailed setup instructions
-- Troubleshooting guide
-- Configuration options
-- Results interpretation
-- CI/CD integration examples
+- **SonarQube Dashboard**: `http://localhost:9000` (credentials: admin/admin)
+- **ZAP HTML Report**: `results/zap/zap_report.html`
+- **Combined Visualizations**: `results/visualizations/`
+- **SAST Results**: `results/sast/`
+- **Executive Report**: `results/visualizations/security_report.html`
 
-### GitHub Actions Setup
+### Additional Documentation
 
-See `.github/workflows/` directory for example CI/CD workflows (coming soon)
-
----
-
-## 📈 Understanding the Results
-
-### Reading the Charts
-
-The visualization script generates several types of charts:
-
-#### 1. Severity Distribution Chart
-Shows count of issues by severity level:
-- 🔴 **Critical/High**: Fix immediately
-- 🟠 **Medium**: Address soon
-- 🟡 **Low**: Fix when convenient
-- 🟢 **Info**: Good to know
-
-#### 2. Vulnerability Type Chart
-Shows what types of vulnerabilities were found:
-- SQL Injection
-- Cross-Site Scripting (XSS)
-- Authentication Issues
-- Configuration Problems
-- And more...
-
-#### 3. SAST vs DAST Comparison
-Compares findings from both scan types:
-- Some issues only appear in code (SAST)
-- Some only appear at runtime (DAST)
-- Some are found by both
-
-#### 4. Trend Analysis
-Shows how security improves over time:
-- Track vulnerability count across commits
-- See if you're fixing issues faster than creating new ones
-- Monitor overall security posture
-
-### What the Scan Tools Show
-
-For detailed information about SonarQube and OWASP ZAP interfaces, see:
-- **[Screenshots and UI Guide](docs/SCREENSHOTS.md)** - Detailed explanation of what successful scans look like
+- **[SCAN_GUIDE.md](SCAN_GUIDE.md)**: Detailed scanning procedures and troubleshooting
+- **[REPORTS_INDEX.md](reports/REPORTS_INDEX.md)**: Report interpretation guide
 
 ---
 
-## 👨‍🎓 For Beginners
+## 📈 Report & Visualization Output
 
-### "I've never done security testing before"
+### Generated Visualizations
 
-No problem! This project is designed to teach you:
+The `visualize_combined_results.py` script produces 5 chart types:
 
-**Step 1: Understanding the Basics**
-- Read the [OWASP Top 10](https://owasp.org/www-project-top-ten/) to learn about common vulnerabilities
-- Watch the architecture diagram above to see how components connect
+#### 1. Severity Distribution Chart (`severity_distribution.png`)
+Bar chart showing vulnerability counts by severity level:
+- 🔴 **Critical**: Immediate remediation required (CVSS 9.0-10.0)
+- 🔴 **High**: Urgent remediation (CVSS 7.0-8.9)
+- 🟠 **Medium**: Important remediation (CVSS 4.0-6.9)
+- 🟡 **Low**: Optional remediation (CVSS 0.1-3.9)
+- 🟢 **Info**: Informational findings
 
-**Step 2: Run Your First Scan**
-- Fork this repo
-- Let GitHub Actions run automatically
-- Download the visualization artifacts
-- Look at the pretty charts! 📊
+#### 2. Vulnerability Type Breakdown (`issue_types.png`)
+Pie chart categorizing findings by vulnerability class:
+- SQL Injection (CWE-89)
+- Cross-Site Scripting (CWE-79)
+- Authentication/Authorization (CWE-285, CWE-287)
+- Cryptographic Issues (CWE-327)
+- Configuration Errors (CWE-16)
 
-**Step 3: Understanding Findings**
-- High severity = bad, fix first
-- Low severity = not urgent, but still improve
-- Read the descriptions of each vulnerability
-- Learn why each issue is dangerous
+#### 3. Tool Comparison Analysis (`tool_comparison.png`)
+Side-by-side comparison of findings across tools:
+- Bandit vs Pylint vs Safety vs SonarQube (SAST)
+- SAST aggregate vs DAST (ZAP)
+- Overlapping detections identified
 
-**Step 4: Learn to Fix Issues**
-- Start with one vulnerability type
-- Research how to fix it properly
-- Apply the fix to the vulnerable app
-- Re-run scans to verify the fix worked
+#### 4. File-Level Heatmap (`file_heatmap.png`)
+Color-coded visualization of vulnerability density:
+- Red: Files with >10 vulnerabilities
+- Yellow: Files with 5-10 vulnerabilities
+- Green: Files with <5 vulnerabilities
 
-**Step 5: Integrate Into Your Projects**
-- Copy the GitHub Action workflow
-- Add security scanning to your real projects
-- Make security part of your normal development process
+#### 5. Executive Summary Dashboard (`summary_report.png`)
+High-level KPI visualization:
+- Total vulnerability count
+- Severity breakdown percentage
+- Tool coverage metrics
+- Scan execution timestamps
 
-### Common Questions
+### Report Access Points
 
-**Q: Will these scans break my build?**
-A: By default, no. The workflow runs scans and generates reports but doesn't fail your build. You can configure it to fail on high-severity issues.
+**Web Dashboards:**
+- SonarQube UI: `http://localhost:9000` - interactive analysis platform
+- OWASP ZAP HTML Report: `results/zap/zap_report.html` - detailed findings
 
-**Q: How long does scanning take?**
-A: SAST: 2-5 minutes. DAST: 5-15 minutes depending on application size.
+**Data Files:**
+- `results/sast/sast_summary.json` - Aggregated SAST findings
+- `results/zap/zap_alerts.json` - ZAP vulnerability alerts
+- `results/visualizations/combined_data.json` - Unified dataset
 
-**Q: Is this free?**
-A: Yes! OWASP ZAP is completely free. SonarQube has a free community edition. GitHub Actions has free tier limits.
-
-**Q: Can I use this for production apps?**
-A: The scanning tools, yes. The vulnerable web app, absolutely not!
-
-**Q: Do I need to be a security expert?**
-A: No! This project helps you learn. Start simple, improve over time.
-
----
-
-## 📚 Resources
-
-### Security Testing Tools
-- [SonarQube Documentation](https://docs.sonarqube.org/)
-- [OWASP ZAP User Guide](https://www.zaproxy.org/docs/)
-- [ZAP Getting Started](https://www.zaproxy.org/getting-started/)
-
-### Learning Security
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [OWASP Cheat Sheet Series](https://cheatsheetseries.owasp.org/)
-- [CWE (Common Weakness Enumeration)](https://cwe.mitre.org/)
-- [OWASP WebGoat](https://owasp.org/www-project-webgoat/) - Interactive security lessons
-
-### Python Data Visualization
-- [Pandas Documentation](https://pandas.pydata.org/docs/)
-- [Matplotlib Gallery](https://matplotlib.org/stable/gallery/index.html)
-- [Seaborn Tutorial](https://seaborn.pydata.org/tutorial.html)
-
-### CI/CD Security
-- [GitHub Actions Security Best Practices](https://docs.github.com/en/actions/security-guides)
-- [DevSecOps Best Practices](https://owasp.org/www-project-devsecops-guideline/)
+**Documentation:**
+- See [SCAN_GUIDE.md](SCAN_GUIDE.md) for tool output interpretation
+- See [reports/REPORTS_INDEX.md](reports/REPORTS_INDEX.md) for report structure
 
 ---
 
-## 🤝 Contributing
+## 📚 References & Documentation
 
-Contributions are welcome! Whether you're:
-- Fixing bugs
-- Adding new features
-- Improving documentation
-- Adding more visualizations
-- Suggesting better security practices
+### Tool Documentation
+- **[Bandit](https://bandit.readthedocs.io/)** - Python security testing framework
+- **[Pylint](https://pylint.pycqa.org/)** - Python code analysis
+- **[Safety](https://pyup.io/safety/)** - Python dependency vulnerability scanner
+- **[SonarQube](https://docs.sonarqube.org/)** - Continuous code quality inspection
+- **[OWASP ZAP](https://www.zaproxy.org/docs/)** - Web application security scanner
 
-Please:
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
+### Security Standards & Frameworks
+- **[OWASP Top 10](https://owasp.org/www-project-top-ten/)** - Top web application security risks
+- **[CWE](https://cwe.mitre.org/)** - Common Weakness Enumeration
+- **[CVSS](https://www.first.org/cvss/)** - Common Vulnerability Scoring System
+- **[NIST SP 800-115](https://csrc.nist.gov/publications/detail/sp/800-115/final)** - Technical guide to information security testing
+
+### Data Processing Libraries
+- **[Pandas](https://pandas.pydata.org/docs/)** - Data manipulation and analysis
+- **[Matplotlib](https://matplotlib.org/stable/index.html)** - Visualization library
+- **[Seaborn](https://seaborn.pydata.org/)** - Statistical data visualization
+- **[Jinja2](https://jinja.palletsprojects.com/)** - Template engine for Python
+
+### DevSecOps Resources
+- **[GitHub Actions Security](https://docs.github.com/en/actions/security-guides)** - CI/CD security best practices
+- **[OWASP DevSecOps Guideline](https://owasp.org/www-project-devsecops-guideline/)** - Security integration in DevOps
 
 ---
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT License - See [LICENSE](LICENSE) file for full details.
 
 ---
 
-## ⚠️ Disclaimer
+## ⚠️ Security Disclaimer
 
-This project contains a deliberately vulnerable web application for educational purposes. **Never deploy the vulnerable application to a production environment or expose it to the internet.** The purpose is to learn about security testing in a safe, controlled environment.
+This repository includes the DBABA application, which contains **intentionally vulnerable code** for security testing demonstration purposes. This vulnerable application:
 
----
+- **MUST NOT** be deployed to production environments
+- **MUST NOT** be exposed to public networks or the internet
+- **MUST NOT** be used with real user data
+- **MUST** only be run in isolated, controlled testing environments
 
-## 🌟 Acknowledgments
-
-- **OWASP** for providing free, world-class security tools and resources
-- **SonarSource** for the SonarQube platform
-- The **security research community** for continuously improving these tools
-- All contributors to this project
+The security testing tools (Bandit, Pylint, Safety, SonarQube, OWASP ZAP) are production-grade and safe for use in real-world applications.
 
 ---
 
-## 📞 Support
+## 🔗 Project Links
 
-- 📖 Check the [docs](docs/) folder for detailed guides
-- 🐛 Report issues on the [GitHub Issues](https://github.com/noahwilliamshaffer/Dast-Sast/issues) page
-- 💬 Ask questions in [Discussions](https://github.com/noahwilliamshaffer/Dast-Sast/discussions)
+- **Repository**: [github.com/noahwilliamshaffer/DAST-SAST-Security-Testing-Pipeline](https://github.com/noahwilliamshaffer/DAST-SAST-Security-Testing-Pipeline)
+- **Issues**: [Report bugs or request features](https://github.com/noahwilliamshaffer/DAST-SAST-Security-Testing-Pipeline/issues)
+- **Documentation**: See [docs/](docs/) directory for additional guides
 
 ---
 
-**Happy Secure Coding! 🔒**
+## 🙏 Acknowledgments
+
+This project leverages open-source security tools developed and maintained by:
+- **OWASP Foundation** - ZAP scanner and security standards
+- **SonarSource** - SonarQube code quality platform
+- **PyCQA** - Bandit and Pylint Python analysis tools
+- **PyUp.io** - Safety dependency vulnerability database
+
+---
+
+**Built with security in mind** 🔒
