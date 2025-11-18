@@ -658,77 +658,164 @@ sequenceDiagram
 
 ---
 
-## 🧩 Components
+## 🧩 Security Tools Implemented
 
-### 1. SonarQube (SAST) ✅ IMPLEMENTED
+### SAST Tools (Static Application Security Testing)
 
-**What it does**: Analyzes your source code to find bugs, vulnerabilities, and code quality issues.
+#### 1. Bandit - Python Security Scanner ✅
+**Purpose**: Identifies common security issues in Python code through AST analysis
 
-**Key Features**:
-- Detects security vulnerabilities in code
-- Finds code smells and maintainability issues
-- Tracks code coverage from tests
-- Shows technical debt
-- Supports 25+ programming languages
-- **Industry Standard**: Used by 400,000+ organizations worldwide
+**Detection Capabilities**:
+- B105/B106: Hardcoded passwords and secrets
+- B201-B207: Flask security issues (debug mode, template injection)
+- B301-B302: Insecure deserialization (pickle, marshal)
+- B303-B311: Weak cryptographic algorithms (MD5, DES, random)
+- B608: SQL injection patterns
+- B701-B710: SQL injection through string building
 
-**How it works**: SonarQube reads your source files and uses pattern matching and data flow analysis to identify potential security issues without running the code.
+**Implementation**:
+- Command-line tool executed via Python subprocess
+- Outputs JSON with issue location, severity, and CWE mapping
+- Scans entire codebase recursively
+- Integrated into `run_sast_scans.py`
 
-**In This Project**:
-- Runs in Docker container
-- Scans Python code in dbaba application
-- Exports JSON results for visualization
-- Web UI available at http://localhost:9000
+**Output**: `results/sast/bandit_results.json` with HIGH/MEDIUM/LOW severity classification
 
-### 2. OWASP ZAP (DAST) ✅ IMPLEMENTED
+---
 
-**What it does**: Tests your running web application by simulating attacks.
+#### 2. Pylint - Code Quality & Security Linter ✅
+**Purpose**: Static code analysis for code quality, maintainability, and security anti-patterns
 
-**Key Features**:
-- Active scanning (sends malicious payloads)
-- Passive scanning (analyzes traffic)
-- Spider/crawler to discover all pages
-- AJAX spider for modern single-page apps
-- API scanning support
-- Completely free and open-source
-- **Industry Standard**: Most widely used DAST tool globally
+**Detection Capabilities**:
+- Undefined variables that could cause runtime errors
+- Unused imports (potential attack surface reduction)
+- Exception handling issues
+- Code complexity metrics (cyclomatic complexity)
+- Security-adjacent patterns (broad exception catching)
 
-**How it works**: ZAP acts like an attacker, sending various types of malicious requests to your application and analyzing the responses to find vulnerabilities like SQL injection, XSS, and authentication issues.
+**Implementation**:
+- Python linter with custom configuration
+- Disabled verbose docstring warnings (C0114, C0115, C0116)
+- JSON output for programmatic parsing
+- Categorizes issues by type (error/warning/convention/refactor)
+
+**Output**: `results/sast/pylint_results.json` with type-based classification
+
+---
+
+#### 3. Safety - Dependency Vulnerability Scanner ✅
+**Purpose**: Checks Python dependencies against known vulnerability databases
+
+**Detection Capabilities**:
+- CVE identification in `requirements.txt` packages
+- Cross-references with NVD (National Vulnerability Database)
+- GitHub Security Advisories (GHSA) integration
+- PyUp vulnerability database
+
+**Implementation**:
+- Scans `requirements.txt` for known vulnerable package versions
+- JSON output with CVE IDs, CVSS scores, and remediation advice
+- Zero false positives (only reports confirmed CVEs)
+
+**Output**: `results/sast/safety_results.json` with CVE and CVSS data
+
+---
+
+#### 4. SonarQube - Enterprise Code Quality Platform ✅
+**Purpose**: Comprehensive static analysis with web-based dashboard and quality gates
+
+**Detection Capabilities**:
+- Security vulnerabilities (OWASP Top 10 mapping)
+- Security hotspots requiring manual review
+- Code smells and technical debt calculation
+- Code coverage metrics
+- Duplicated code detection
+- 25+ programming language support
+
+**Implementation**:
+- Runs in Docker container (port 9000)
+- `sonar-scanner` CLI tool for project analysis
+- REST API for programmatic results extraction
+- Persistent storage for historical trend analysis
+
+**Output**: Web UI at `http://localhost:9000` + API JSON endpoints
+
+---
+
+### DAST Tool (Dynamic Application Security Testing)
+
+#### 5. OWASP ZAP - Web Application Security Scanner ✅
+**Purpose**: Runtime security testing of web applications through automated penetration testing
+
+**Detection Capabilities**:
+- **Spider Module**: Application mapping and endpoint discovery
+- **Passive Scan**: Traffic analysis for security misconfigurations
+  - Missing security headers (CSP, HSTS, X-Frame-Options)
+  - Cookie security issues (HttpOnly, Secure flags)
+  - Information disclosure in responses
+- **Active Scan**: Automated penetration testing
+  - SQL Injection (error-based, boolean-based, time-based)
+  - Cross-Site Scripting (reflected, stored, DOM-based)
+  - CSRF vulnerabilities
+  - Path traversal
+  - Authentication bypass
+
+**Implementation**:
+- Runs in Docker container as daemon (port 8080)
+- RESTful API control via curl commands
+- 3-phase scanning (spider → passive → active)
+- Progress tracking with polling mechanism
+
+**Output**: 
+- HTML report: `results/zap/zap_report.html`
+- JSON alerts: `results/zap/zap_alerts.json`
+- XML report: `results/zap/zap_report.xml`
 
 **Official Site**: [zaproxy.org](https://www.zaproxy.org/)
 
-**In This Project**:
-- Runs in Docker container (daemon mode)
-- Spiders and actively scans DBABA web application
-- Tests for OWASP Top 10 vulnerabilities
-- Exports HTML, XML, and JSON reports
-- Results visualized in combined dashboard
+---
 
-### 3. Pandas Visualization Script
+### Data Processing Infrastructure
 
-**What it does**: Processes scan results and creates visual charts.
+#### Pandas Visualization Pipeline ✅
+**Purpose**: Aggregates, normalizes, and visualizes outputs from all 5 security tools
 
 **Capabilities**:
-- Parses JSON reports from both scanners
-- Normalizes data into consistent format
-- Categorizes vulnerabilities by severity and type
-- Generates multiple chart types:
-  - Bar charts for severity distribution
-  - Pie charts for vulnerability categories
-  - Line graphs for trends over time
-  - Comparison charts (SAST vs DAST)
-- Exports publication-ready images (PNG/SVG)
+- Multi-format JSON parsing (5 different schemas)
+- Severity level normalization across tools
+- Data aggregation into unified Pandas DataFrame
+- Statistical analysis (counts, distributions, trends)
+- Chart generation (Matplotlib/Seaborn)
+- HTML report creation (Jinja2 templates)
 
-### 4. Vulnerable Web Application
+**Implementation**: `scripts/visualize_combined_results.py` and `scripts/visualize_sast_results.py`
 
-A deliberately insecure web application used for demonstration and testing purposes. Contains common vulnerabilities like:
-- SQL Injection
-- Cross-Site Scripting (XSS)
-- Insecure Authentication
-- Sensitive Data Exposure
-- Security Misconfiguration
+**Output**: 
+- `results/visualizations/` directory containing PNG charts
+- `results/visualizations/security_report.html` executive summary
 
-**⚠️ Warning**: Never deploy the vulnerable app to production!
+---
+
+### Target Application
+
+#### DBABA - Deliberately Vulnerable Web Application ✅
+**Purpose**: Flask-based web application with intentionally introduced security flaws for testing
+
+**Known Vulnerabilities**:
+- SQL Injection in login form
+- Cross-Site Scripting in search functionality
+- Hardcoded database credentials
+- Insecure session management
+- Missing input validation
+- Information disclosure through error messages
+
+**Implementation**:
+- Flask web framework (Python)
+- SQLite database backend
+- Runs in Docker container (port 5000)
+- Network-accessible to ZAP scanner
+
+**⚠️ Security Warning**: This application contains real security vulnerabilities. Never deploy to production or expose to the internet.
 
 ---
 
