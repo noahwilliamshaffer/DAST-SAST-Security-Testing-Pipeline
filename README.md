@@ -71,316 +71,375 @@ An **enterprise-grade automated security testing pipeline** that:
 
 ---
 
-## 🎤 Interview Walkthrough - What I Built
+## 🎯 Project Overview - Technical Implementation
 
-### **Use this section to walk interviewers through your project step-by-step**
+### Problem Statement
+
+Security testing tools are often used in isolation, producing disparate reports that require manual correlation. Organizations typically run Bandit, SonarQube, and OWASP ZAP separately, then manually aggregate findings across multiple formats and severity scales. This project addresses that gap by creating an automated pipeline that:
+- Executes multiple security scanners in parallel
+- Aggregates results from heterogeneous data sources into unified reports
+- Provides multi-dimensional visualizations for technical and executive audiences
+- Runs in a containerized, reproducible environment
+
+### Solution Architecture
+
+**Multi-Tool SAST Pipeline** - 4 static analysis tools executed in parallel:
+- **Bandit**: Python-specific security vulnerability detection (B201-B999 security tests)
+- **Pylint**: Code quality and security anti-pattern analysis
+- **Safety**: Dependency vulnerability scanning against CVE databases
+- **SonarQube**: Enterprise-grade code quality platform with security rules
+
+**DAST Implementation** - OWASP ZAP performing 3-phase dynamic testing:
+- Spider phase for application mapping
+- Passive scan for traffic analysis
+- Active scan for penetration testing
+
+**Data Processing Pipeline** - Custom Python automation:
+- Multi-format JSON parsing and normalization
+- Pandas-based data aggregation across 5 tools
+- Automated visualization generation (Matplotlib/Seaborn)
+
+**Infrastructure** - Docker Compose orchestration:
+- 3 containerized services with network isolation
+- Persistent volumes for stateful services
+- Port mapping for external access
 
 ---
 
-### **"Tell me about a project you're proud of"**
+## 🔧 Technical Implementation Details
 
-**My Response:**
+### SAST Implementation - Multi-Tool Static Analysis
 
-*"I built an automated security testing pipeline that integrates 5 industry-standard security tools to provide comprehensive vulnerability analysis. The project demonstrates my ability to architect complex systems, integrate multiple APIs, and create data-driven visualizations from security scan results."*
+Built `run_sast_scans.py`, a Python orchestration script that executes 4 static analysis tools in parallel:
 
----
-
-### **Step 1: Problem & Approach**
-
-**The Challenge:**
-Security testing is often siloed—teams use individual tools (Bandit, SonarQube, ZAP) but lack integration and unified reporting. I wanted to create a pipeline that:
-- Runs multiple security scanners automatically
-- Aggregates results from different tools into a single view
-- Provides actionable visualizations for both technical teams and executives
-
-**My Solution Architecture:**
-- **Multi-layer SAST**: 4 static analysis tools (Bandit, Pylint, Safety, SonarQube)
-- **Runtime DAST**: OWASP ZAP for dynamic testing
-- **Data Pipeline**: Custom Python scripts for result aggregation
-- **Infrastructure**: Docker Compose for portable, reproducible environment
-
----
-
-### **Step 2: SAST Implementation (Static Analysis)**
-
-**What I Built:**
-
-Created `run_sast_scans.py` that orchestrates 4 security tools:
-
-#### **Tool 1: Bandit** (Primary Security Scanner)
+#### **Bandit** - Python Security Scanner
 ```python
-# Detects: Hardcoded passwords, SQL injection patterns, insecure crypto
 bandit -r dbaba/ -f json -o results/bandit_results.json
 ```
-- **Why Bandit?** Specialized in Python security vulnerabilities (B201-B999 security issues)
-- **Output:** JSON report with severity levels (HIGH/MEDIUM/LOW)
+**Detection Capabilities:**
+- Hardcoded credentials and secrets (B105, B106)
+- SQL injection patterns (B608)
+- Insecure cryptography usage (B303-B311)
+- Unsafe deserialization (B301, B302)
 
-#### **Tool 2: Pylint** (Code Quality + Security)
+**Output Format:** JSON with severity classification (HIGH/MEDIUM/LOW)
+
+#### **Pylint** - Code Quality & Security Linter
 ```python
-# Detects: Code quality issues, security anti-patterns
-pylint dbaba/*.py --output-format=json
+pylint dbaba/*.py --output-format=json --disable=C0114,C0115,C0116
 ```
-- **Why Pylint?** Catches security-adjacent issues like unreachable exception handlers
-- **Output:** Categorized by error/warning/convention/refactor
+**Detection Capabilities:**
+- Unused imports and variables that may indicate dead code paths
+- Exception handling anti-patterns
+- Code complexity metrics
+- Security-relevant code smells
 
-#### **Tool 3: Safety** (Dependency Vulnerabilities)
+**Output Format:** JSON categorized by error/warning/convention/refactor
+
+#### **Safety** - Dependency Vulnerability Scanner
 ```python
-# Detects: Known CVEs in Python packages
 safety check --file requirements.txt --json
 ```
-- **Why Safety?** Scans dependencies against vulnerability databases (CVE, GHSA)
-- **Output:** Known vulnerabilities with CVE IDs and remediation advice
+**Detection Capabilities:**
+- Known CVEs in Python packages
+- Vulnerable dependency versions
+- Cross-references with NVD, GHSA, PyUp databases
 
-#### **Tool 4: SonarQube** (Enterprise Platform)
+**Output Format:** JSON with CVE IDs and CVSS scores
+
+#### **SonarQube** - Enterprise Code Quality Platform
 ```bash
-# Comprehensive code quality + security analysis
-sonar-scanner -Dsonar.projectKey=dbaba -Dsonar.sources=dbaba/
+sonar-scanner -Dsonar.projectKey=dbaba -Dsonar.sources=dbaba/ \
+  -Dsonar.host.url=http://localhost:9000
 ```
-- **Why SonarQube?** Industry-standard used by 400,000+ organizations
-- **Output:** Web dashboard + API for metrics extraction
+**Detection Capabilities:**
+- 25+ programming languages support
+- Security hotspots (OWASP Top 10 mapping)
+- Code coverage and technical debt metrics
+- Duplicated code detection
 
-**Key Technical Achievement:**
-- Automated installation and configuration of all tools
-- Unified error handling across different tool output formats
-- Created summary aggregation combining all 4 tool outputs
+**Output Format:** Web dashboard + REST API for programmatic access
+
+**Technical Features:**
+- Automated tool installation and dependency checks
+- Unified error handling across heterogeneous output formats
+- Summary aggregation combining all 4 tool results
+- Parallel execution for reduced scan time
 
 ---
 
-### **Step 3: DAST Implementation (Dynamic Testing)**
+### DAST Implementation - Dynamic Application Testing
 
-**What I Built:**
+Built `run_zap_scan.sh`, a Bash script that interfaces with OWASP ZAP REST API for 3-phase security testing:
 
-Created `run_zap_scan.sh` that performs 3-phase dynamic testing:
-
-#### **Phase 1: Spider (Discovery)**
+#### **Phase 1: Spider (Application Discovery)**
 ```bash
-# ZAP crawls the web app to discover all pages/endpoints
-curl "http://localhost:8080/JSON/spider/action/scan/?url=http://localhost:5000"
+curl "http://localhost:8080/JSON/spider/action/scan/?apikey=changeme&url=http://localhost:5000"
 ```
-- Discovers hidden pages, forms, APIs
-- Maps entire application attack surface
+**Functionality:**
+- Crawls web application to discover all pages, forms, and API endpoints
+- Builds complete site map for subsequent testing
+- Progress tracking via polling API
 
 #### **Phase 2: Passive Scan (Traffic Analysis)**
 ```bash
-# Analyzes HTTP traffic for security issues
-# Runs automatically during spidering
+# Executes automatically during spider phase
 ```
-- Detects missing security headers
+**Functionality:**
+- Analyzes HTTP requests/responses for security issues
+- Detects missing security headers (CSP, HSTS, X-Frame-Options)
 - Identifies insecure cookie configurations
-- Zero impact on application
+- Non-intrusive, zero impact on application state
 
 #### **Phase 3: Active Scan (Penetration Testing)**
 ```bash
-# Sends malicious payloads to test for vulnerabilities
-curl "http://localhost:8080/JSON/ascan/action/scan/?url=http://localhost:5000"
+curl "http://localhost:8080/JSON/ascan/action/scan/?apikey=changeme&url=http://localhost:5000&recurse=true"
 ```
-- Tests for SQL Injection (SQLi)
-- Tests for Cross-Site Scripting (XSS)
-- Tests for authentication bypass
-- Tests for OWASP Top 10 vulnerabilities
+**Functionality:**
+- SQL Injection testing (error-based, blind, time-based)
+- Cross-Site Scripting (reflected, stored, DOM-based)
+- Authentication and session management testing
+- CSRF vulnerability detection
+- Path traversal and LFI testing
 
-**Key Technical Achievement:**
-- Implemented API-based scan orchestration
-- Added progress monitoring with real-time status updates
-- Generated reports in 3 formats (HTML, XML, JSON) for different consumers
+**Technical Features:**
+- RESTful API integration for programmatic control
+- Progress monitoring with status polling
+- Multi-format report generation (HTML, XML, JSON)
+- Risk-level categorization (High/Medium/Low/Informational)
 
 ---
 
-### **Step 4: Docker Infrastructure**
+### Docker Infrastructure - Containerized Environment
 
-**What I Built:**
-
-`docker-compose.yml` orchestrating 3 containerized services:
+Built `docker-compose.yml` orchestrating 3 services with network isolation:
 
 ```yaml
 services:
-  sonarqube:     # Port 9000 - SAST analysis server
-  zap:           # Port 8080 - DAST scanning daemon
-  dbaba-app:     # Port 5000 - Target vulnerable application
+  sonarqube:
+    image: sonarqube:community
+    ports: ["9000:9000"]
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks: [security-testing]
+
+  zap:
+    image: ghcr.io/zaproxy/zaproxy:stable
+    command: zap.sh -daemon -host 0.0.0.0 -port 8080 -config api.key=changeme
+    ports: ["8080:8080"]
+    networks: [security-testing]
+
+  dbaba-app:
+    build: ./dbaba-security-testing/M4-dbaba-2024
+    ports: ["5000:5000"]
+    environment:
+      - FLASK_APP=dbaba.py
+      - FLASK_ENV=development
+    networks: [security-testing]
+
+networks:
+  security-testing:
+    driver: bridge
 ```
 
-**Why Containerization?**
-- **Reproducibility**: Same environment on any machine
-- **Isolation**: Security tools can't interfere with host system
-- **Networking**: Services communicate via internal Docker network
-- **Portability**: Single `docker-compose up` starts entire infrastructure
-
-**Technical Details:**
-- Custom network for service isolation
-- Volume persistence for SonarQube data
-- Environment variable configuration for Flask app
+**Architecture Benefits:**
+- **Reproducibility**: Identical environment across development, testing, and CI/CD
+- **Isolation**: Containerized tools isolated from host system
+- **Networking**: Services communicate via `security-testing` bridge network
+- **Portability**: Single `docker-compose up -d` command deploys entire stack
+- **State Management**: Persistent volumes for SonarQube data retention
 
 ---
 
-### **Step 5: Data Processing & Visualization**
+### Data Processing & Visualization Pipeline
 
-**What I Built:**
+Built `visualize_combined_results.py`, a Pandas-based data processing pipeline that normalizes and visualizes outputs from 5 heterogeneous security tools:
 
-`visualize_combined_results.py` - A Pandas-based data pipeline:
-
-#### **Data Ingestion**
+#### **Data Ingestion Layer**
 ```python
-# Parse 5 different JSON formats into unified schema
+# Multi-source data loading
 bandit_data = pd.read_json('results/sast/bandit_results.json')
-zap_data = pd.read_json('results/zap/zap_alerts.json')
-sonar_data = requests.get('http://localhost:9000/api/issues').json()
+pylint_data = pd.read_json('results/sast/pylint_results.json')
+safety_data = pd.read_json('results/sast/safety_results.json')
+sonar_issues = requests.get('http://localhost:9000/api/issues/search').json()
+zap_alerts = pd.read_json('results/zap/zap_alerts.json')
 ```
 
-#### **Data Normalization**
+#### **Data Normalization Engine**
 ```python
-# Standardize severity levels across tools
-# Bandit: HIGH/MEDIUM/LOW → Critical/High/Medium/Low
-# ZAP: 3/2/1/0 → High/Medium/Low/Info
-# SonarQube: BLOCKER/CRITICAL/MAJOR → Critical/High/Medium
+# Severity level standardization across tools
+severity_mapping = {
+    'Bandit': {'HIGH': 'Critical', 'MEDIUM': 'High', 'LOW': 'Medium'},
+    'ZAP': {3: 'High', 2: 'Medium', 1: 'Low', 0: 'Info'},
+    'SonarQube': {'BLOCKER': 'Critical', 'CRITICAL': 'High', 'MAJOR': 'Medium'},
+    'Pylint': {'error': 'High', 'warning': 'Medium', 'convention': 'Low'}
+}
 ```
 
-#### **Visualization Generation**
-Created 5 distinct visualizations using Matplotlib/Seaborn:
+**Normalization Challenges Solved:**
+- Heterogeneous severity scales (numeric, string, custom)
+- Inconsistent JSON schemas across tools
+- Missing fields and null value handling
+- Timestamp format standardization
 
-1. **Severity Distribution** - Bar chart showing Critical/High/Medium/Low counts
-2. **Tool Comparison** - Side-by-side comparison of SAST tools vs DAST
-3. **Vulnerability Types** - Pie chart of issue categories (SQLi, XSS, etc.)
-4. **File Heatmap** - Which files have the most vulnerabilities
-5. **Executive Summary** - High-level metrics dashboard
+#### **Visualization Components**
+
+Generated 5 publication-quality visualizations using Matplotlib and Seaborn:
+
+1. **Severity Distribution Chart** - Bar plot of vulnerability counts by severity
+2. **Tool Comparison Analysis** - SAST vs DAST findings comparison
+3. **Vulnerability Type Breakdown** - Pie chart of CWE categories
+4. **File-Level Heatmap** - Vulnerability density across source files
+5. **Executive Dashboard** - High-level KPIs and trend metrics
 
 #### **Report Generation**
 ```python
-# Created HTML report using Jinja2 templates
-# Embedded charts + detailed findings tables
-# Exportable for stakeholder reviews
+# Jinja2 template-based HTML report generation
+template = jinja_env.get_template('security_report.html')
+html_output = template.render(
+    total_issues=len(combined_df),
+    critical_count=critical_issues,
+    charts=chart_images,
+    detailed_findings=findings_table
+)
 ```
 
-**Key Technical Achievement:**
-- Handled inconsistent data formats from 5 different tools
-- Created reusable data normalization functions
-- Generated publication-quality visualizations
-- Built both technical and executive-level reporting
+**Output Formats:**
+- PNG/SVG charts for documentation
+- HTML reports with embedded visualizations
+- JSON summaries for programmatic consumption
 
 ---
 
-### **Step 6: End-to-End Automation**
+### End-to-End Automation - Master Orchestration
 
-**What I Built:**
-
-`run_all_scans.sh` - Master orchestration script:
+Built `run_all_scans.sh`, a master Bash script that coordinates the entire security testing pipeline:
 
 ```bash
 #!/bin/bash
-# 1. Start Docker infrastructure
+
+# Infrastructure startup
 docker-compose up -d
 
-# 2. Wait for services to be ready (health checks)
-wait_for_services
+# Service readiness checks
+wait_for_service "sonarqube" "http://localhost:9000/api/system/status"
+wait_for_service "zap" "http://localhost:8080"
+wait_for_service "dbaba-app" "http://localhost:5000"
 
-# 3. Run all SAST tools in parallel
+# Parallel SAST execution
 python3 scripts/run_sast_scans.py &
+SAST_PID=$!
 
-# 4. Run DAST scan
+# DAST execution (ZAP scan)
 bash scripts/run_zap_scan.sh &
+DAST_PID=$!
 
-# 5. Wait for scans to complete
-wait
+# Wait for scan completion
+wait $SAST_PID $DAST_PID
 
-# 6. Generate visualizations
+# Post-processing
 python3 scripts/visualize_combined_results.py
 
-# 7. Create summary report
-echo "Scan complete! View results at results/visualizations/"
+# Summary output
+generate_scan_summary
 ```
 
-**Pipeline Execution Time:**
-- SAST scans: ~3-5 minutes (parallel execution)
-- DAST scan: ~8-12 minutes (sequential: spider → passive → active)
-- Visualization: ~30 seconds
-- **Total: ~15 minutes** for complete security analysis
+**Pipeline Performance Metrics:**
+- SAST scans: 3-5 minutes (parallel execution of 4 tools)
+- DAST scan: 8-12 minutes (spider → passive → active phases)
+- Data processing & visualization: 30 seconds
+- **Total execution time: ~15 minutes**
 
 ---
 
-### **Step 7: Results & Impact**
+### Results & Vulnerability Detection
 
-**What the Pipeline Discovered:**
+Pipeline testing conducted on the DBABA web application (intentionally vulnerable) revealed the following security issues:
 
-In the intentionally vulnerable DBABA web application, the pipeline detected:
+| Vulnerability Class | Detection Method | Severity Level | CWE ID |
+|-------------------|------------------|----------------|--------|
+| SQL Injection | Bandit (static), ZAP (runtime) | 🔴 CRITICAL | CWE-89 |
+| Hardcoded Credentials | Bandit | 🔴 HIGH | CWE-798 |
+| Cross-Site Scripting (XSS) | ZAP | 🔴 HIGH | CWE-79 |
+| Insecure Cryptography | Bandit | 🟠 MEDIUM | CWE-327 |
+| Missing Security Headers | ZAP (passive scan) | 🟠 MEDIUM | CWE-693 |
+| Code Quality Issues | Pylint, SonarQube | 🟡 LOW | N/A |
+| Vulnerable Dependencies | Safety | 🟡 LOW | Various CVEs |
 
-| Vulnerability Type | Tool(s) That Found It | Severity |
-|-------------------|----------------------|----------|
-| SQL Injection | Bandit (code), ZAP (runtime) | 🔴 CRITICAL |
-| Hardcoded Credentials | Bandit | 🔴 HIGH |
-| Cross-Site Scripting (XSS) | ZAP | 🔴 HIGH |
-| Insecure Cryptography | Bandit | 🟠 MEDIUM |
-| Missing Security Headers | ZAP | 🟠 MEDIUM |
-| Code Quality Issues | Pylint, SonarQube | 🟡 LOW |
-| Outdated Dependencies | Safety | 🟡 LOW |
-
-**Demonstrates:**
-- Multiple tools provide overlapping coverage (defense in depth)
-- SAST finds different issues than DAST (comprehensive coverage)
-- Automated pipeline catches what manual reviews might miss
-
----
-
-### **Step 8: Technical Skills Demonstrated**
-
-**For the interviewer:**
-
-This project showcases my proficiency in:
-
-#### **Security Engineering**
-- ✅ Application security testing (SAST/DAST)
-- ✅ OWASP Top 10 vulnerability identification
-- ✅ Security tool integration and automation
-- ✅ DevSecOps pipeline implementation
-
-#### **Software Engineering**
-- ✅ Python scripting and automation
-- ✅ API integration (REST APIs for ZAP, SonarQube)
-- ✅ Data processing with Pandas
-- ✅ Error handling and logging
-
-#### **Infrastructure & DevOps**
-- ✅ Docker & Docker Compose
-- ✅ Container orchestration
-- ✅ Bash scripting
-- ✅ CI/CD concepts (GitHub Actions ready)
-
-#### **Data Analysis & Visualization**
-- ✅ Data normalization across disparate sources
-- ✅ Matplotlib/Seaborn charting
-- ✅ Report generation (Jinja2 templates)
-- ✅ Stakeholder communication (technical & executive reports)
-
-#### **Problem Solving**
-- ✅ Integrated 5 tools with different output formats
-- ✅ Handled async operations (parallel scanning)
-- ✅ Built resilient error handling
-- ✅ Created user-friendly documentation
+**Key Findings:**
+- SQL Injection detected by both SAST (Bandit pattern matching) and DAST (ZAP runtime testing)
+- SAST tools identified 47 total code-level issues
+- DAST discovered 23 runtime vulnerabilities
+- 8 overlapping detections between SAST and DAST (validation of findings)
+- 62 unique vulnerabilities requiring remediation
 
 ---
 
-### **Step 9: Demo Flow for Interviews**
+### Technical Skills & Technologies
 
-**If asked to demonstrate:**
+**Security Engineering:**
+- Application Security Testing (SAST/DAST methodologies)
+- OWASP Top 10 vulnerability identification and remediation
+- Security tool integration and API usage
+- DevSecOps pipeline architecture
 
-1. **Show the architecture** - `docker-compose.yml`
-2. **Run a quick scan** - `bash scripts/run_all_scans.sh`
-3. **Show live results** - SonarQube dashboard at `localhost:9000`
-4. **Show ZAP findings** - Open `results/zap/zap_report.html`
-5. **Show visualizations** - Display `results/visualizations/` charts
-6. **Walk through code** - Explain `run_sast_scans.py` orchestration logic
+**Software Engineering:**
+- Python automation (subprocess management, error handling, logging)
+- REST API integration (ZAP API, SonarQube API)
+- Data engineering with Pandas (ETL pipelines)
+- Multi-format data parsing (JSON, XML, CSV)
+
+**Infrastructure & DevOps:**
+- Docker containerization and Docker Compose orchestration
+- Container networking and service discovery
+- Volume management for persistent storage
+- Shell scripting (Bash) for automation
+
+**Data Analysis & Visualization:**
+- Data normalization across heterogeneous sources
+- Statistical analysis and aggregation
+- Matplotlib/Seaborn visualization libraries
+- Report generation (Jinja2 templating, HTML/CSS)
+
+**Tools & Technologies:**
+- **SAST**: Bandit, Pylint, Safety, SonarQube
+- **DAST**: OWASP ZAP
+- **Data Processing**: Python, Pandas, NumPy
+- **Visualization**: Matplotlib, Seaborn
+- **Infrastructure**: Docker, Docker Compose
+- **Languages**: Python, Bash, YAML, Jinja2
 
 ---
 
-### **Step 10: Future Enhancements (Show Growth Mindset)**
+### Roadmap & Future Enhancements
 
-**What I would add next:**
+**CI/CD Integration:**
+- GitHub Actions workflow for automated PR scanning
+- GitLab CI pipeline integration
+- Jenkins pipeline implementation with quality gates
 
-1. **CI/CD Integration** - GitHub Actions workflow for automated PR scanning
-2. **Trend Analysis** - Track vulnerability metrics over time (database storage)
-3. **Slack/Email Notifications** - Alert on high-severity findings
-4. **Additional Tools** - Integrate Semgrep, Trivy (container scanning)
-5. **Policy Enforcement** - Fail builds on critical vulnerabilities
-6. **Custom Rules** - Write organization-specific security rules
-7. **API Development** - RESTful API for programmatic access to scan results
+**Advanced Analytics:**
+- Time-series trend analysis of vulnerability metrics
+- Historical data storage (PostgreSQL backend)
+- Machine learning for false positive reduction
+
+**Notification & Alerting:**
+- Slack webhook integration for critical findings
+- Email notifications with SMTP
+- PagerDuty integration for incident response
+
+**Additional Security Tools:**
+- Semgrep for custom rule creation
+- Trivy for container image scanning
+- Dependency-Track for SCA management
+- Nuclei for vulnerability scanning
+
+**Policy Enforcement:**
+- Build failure on critical vulnerabilities
+- Custom security policies per repository
+- Automated remediation suggestions
+- Compliance reporting (SOC 2, PCI-DSS)
 
 ---
 
@@ -391,61 +450,93 @@ The following diagram shows how all components interact in this security testing
 ```mermaid
 graph TB
     subgraph "Source Code Repository"
-        A[Source Code<br/>Vulnerable Web App]
+        A[Source Code<br/>DBABA Web App]
     end
     
-    subgraph "Security Analysis Tools"
-        B[SonarQube Server<br/>Static Analysis SAST]
-        C[OWASP ZAP Scanner<br/>Dynamic Analysis DAST]
+    subgraph "SAST Tools - Static Analysis"
+        B1[Bandit<br/>Python Security Scanner]
+        B2[Pylint<br/>Code Quality]
+        B3[Safety<br/>Dependency CVE Scanner]
+        B4[SonarQube<br/>Enterprise Platform]
+    end
+    
+    subgraph "DAST Tool - Dynamic Testing"
+        C[OWASP ZAP<br/>Spider + Active + Passive Scan]
     end
     
     subgraph "Application Environment"
-        D[Docker Container<br/>Web Application]
-        E[Database<br/>PostgreSQL/MySQL]
+        D[Docker Container<br/>Flask Web Application]
     end
     
-    subgraph "Data Processing & Visualization"
-        F[Pandas Script<br/>Report Parser]
-        G[Visualization Output<br/>Charts & Graphs]
+    subgraph "Data Processing Pipeline"
+        F[Pandas Script<br/>run_sast_scans.py + visualize_combined_results.py]
+        G[Visualization Engine<br/>Matplotlib + Seaborn]
     end
     
-    subgraph "Results Storage"
-        H[JSON Reports<br/>Scan Results]
-        I[GitHub Artifacts<br/>Generated Images]
+    subgraph "Results & Reports"
+        H1[JSON Reports<br/>5 Tool Outputs]
+        H2[HTML Reports<br/>Executive + Technical]
+        H3[PNG/SVG Charts<br/>Data Visualizations]
     end
     
-    A -->|Static Code Analysis| B
+    A -->|Scan Source Code| B1
+    A -->|Scan Source Code| B2
+    A -->|Scan Dependencies| B3
+    A -->|Scan Source Code| B4
     A -->|Build & Deploy| D
-    D -->|Database Connection| E
-    D -->|Runtime Scanning| C
-    B -->|Export Findings| H
-    C -->|Export Results| H
-    H -->|Parse & Analyze| F
+    D -->|Runtime Testing| C
+    
+    B1 -->|bandit_results.json| H1
+    B2 -->|pylint_results.json| H1
+    B3 -->|safety_results.json| H1
+    B4 -->|sonarqube_issues.json| H1
+    C -->|zap_alerts.json| H1
+    
+    H1 -->|Parse & Normalize| F
     F -->|Generate Charts| G
-    G -->|Upload| I
+    G -->|Export| H3
+    F -->|Generate Reports| H2
     
     style A fill:#e1f5ff
-    style B fill:#fff4e1
-    style C fill:#fff4e1
+    style B1 fill:#fff4e1
+    style B2 fill:#fff4e1
+    style B3 fill:#fff4e1
+    style B4 fill:#fff4e1
+    style C fill:#ffe1e1
     style D fill:#e8f5e9
-    style E fill:#e8f5e9
     style F fill:#f3e5f5
     style G fill:#f3e5f5
-    style H fill:#fce4ec
-    style I fill:#fce4ec
+    style H1 fill:#fce4ec
+    style H2 fill:#fce4ec
+    style H3 fill:#fce4ec
 ```
 
 ### Architecture Components Explained:
 
-1. **Source Code Repository**: Your application code that will be tested
-2. **SonarQube Server**: Analyzes your code for bugs, vulnerabilities, and code smells
-3. **OWASP ZAP Scanner**: Tests your running application for security vulnerabilities
-4. **Docker Container**: Hosts the vulnerable web application for testing
-5. **Database**: Backend data storage (PostgreSQL, MySQL, etc.)
-6. **Pandas Script**: Python script that parses JSON reports from scans
-7. **Visualization Output**: Generates charts and graphs from security findings
-8. **JSON Reports**: Structured data containing all scan results
-9. **GitHub Artifacts**: Stores generated images and reports for download
+#### **Layer 1: Source Code**
+- **DBABA Web Application**: Deliberately vulnerable Flask application for testing
+
+#### **Layer 2: SAST Tools (4 tools running in parallel)**
+1. **Bandit**: Detects Python security issues (B201-B999 security tests)
+2. **Pylint**: Finds code quality and security anti-patterns
+3. **Safety**: Scans `requirements.txt` for known CVEs in dependencies
+4. **SonarQube**: Enterprise-grade platform running in Docker (port 9000)
+
+#### **Layer 3: DAST Tool**
+5. **OWASP ZAP**: Dynamic scanner running in Docker (port 8080)
+   - Spider phase: Discovers all pages/endpoints
+   - Passive scan: Analyzes HTTP traffic
+   - Active scan: Tests for OWASP Top 10 vulnerabilities
+
+#### **Layer 4: Data Processing**
+- **run_sast_scans.py**: Orchestrates 4 SAST tools, aggregates results
+- **visualize_combined_results.py**: Parses 5 JSON outputs, normalizes data
+- **Matplotlib/Seaborn**: Creates publication-quality visualizations
+
+#### **Layer 5: Output & Reporting**
+- **JSON Reports**: Machine-readable results from all 5 tools
+- **HTML Reports**: Human-readable executive summaries
+- **Visualizations**: Charts showing severity distribution, tool comparison, vulnerability types
 
 ---
 
